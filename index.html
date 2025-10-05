@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Chúc Trung Thu - Phạm Duy Anh 💖 Bùi Thu Hà</title>
+<style>
+  :root{
+    --pink1:#ffbfd3;
+    --pink2:#ff7bb1;
+    --bg:#fff0f6;
+    --text:#4a0026;
+  }
+  html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+  body{
+    background: radial-gradient(circle at 10% 10%, #fff6fb, var(--bg) 40%), linear-gradient(180deg,var(--pink1),var(--pink2));
+    overflow:hidden;color:var(--text);
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  .card{
+    width:95vw; max-width:920px; height:88vh; border-radius:18px; box-shadow:0 10px 40px rgba(0,0,0,0.18);
+    background: linear-gradient(180deg, rgba(255,255,255,0.15), rgba(255,255,255,0.06));
+    backdrop-filter: blur(6px); position:relative; overflow:hidden; padding:28px;
+    display:flex; flex-direction:column; align-items:center; justify-content:space-between;
+  }
+
+  /* moon */
+  .moon{
+    position:absolute; right:14%; top:8%; width:160px; height:160px; border-radius:50%;
+    background: radial-gradient(circle at 35% 30%, #fffcf0 0%, #fff2d6 20%, #ffe7b2 40%, #ffd7a8 60%, rgba(255,215,160,0.85) 100%);
+    box-shadow:0 6px 30px rgba(255,200,150,0.18), inset -6px -6px 20px rgba(0,0,0,0.04);
+    transform:translateY(0); animation:float 6s ease-in-out infinite;
+  }
+  @keyframes float { 0%{transform:translateY(0)}50%{transform:translateY(-12px)}100%{transform:translateY(0)}}
+
+  /* lanterns */
+  .lantern{
+    position:absolute; left:10%; top:20%; width:70px; height:110px; border-radius:12px;
+    background:linear-gradient(180deg,#ff8fc5,#ff4f9c); box-shadow:0 6px 24px rgba(255,75,150,0.18);
+    transform-origin:center bottom; animation:sway 4s ease-in-out infinite;
+  }
+  .lantern::after{content:""; position:absolute; left:50%; bottom:-12px; width:2px; height:18px; background:#553; transform:translateX(-50%); border-radius:2px;}
+  @keyframes sway {0%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}100%{transform:rotate(-6deg)}}
+
+  /* title */
+  .title{
+    margin-top:18px; text-align:center;
+  }
+  .title h1{margin:0; font-size:28px; letter-spacing:0.6px; color:#3b0022;}
+  .title p{margin:8px 0 0; opacity:0.9; font-size:16px;}
+
+  /* message box */
+  .message{
+    width:92%; max-width:760px; background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.08));
+    border-radius:12px; padding:18px; box-shadow:0 6px 20px rgba(200,50,120,0.07);
+    text-align:center; font-size:18px; line-height:1.6; margin-bottom:14px;
+  }
+
+  /* hearts */
+  .hearts{position:absolute; left:0; top:0; width:100%; height:100%; pointer-events:none; overflow:hidden;}
+  .heart{
+    position:absolute; width:28px; height:28px; transform:rotate(-45deg); background:#ff6fa3; border-radius:6px 6px 0 0;
+    animation:rise linear forwards;
+    box-shadow:0 4px 12px rgba(255,85,150,0.18);
+  }
+  .heart::before,.heart::after{content:""; position:absolute; width:28px; height:28px; background:inherit; border-radius:50%;}
+  .heart::before{top:-14px; left:0}
+  .heart::after{left:14px; top:0}
+
+  @keyframes rise {
+    0%{opacity:0; transform:translateY(0) scale(0.6) rotate(-45deg)}
+    10%{opacity:1}
+    100%{opacity:0; transform:translateY(-110vh) scale(1.2) rotate(-20deg)}
+  }
+
+  /* play hint */
+  .play-hint{
+    position:absolute; left:50%; bottom:18px; transform:translateX(-50%); z-index:8;
+    background:rgba(255,255,255,0.9); padding:8px 14px; border-radius:999px; font-weight:600;
+    box-shadow:0 6px 18px rgba(200,80,140,0.12);
+    display:flex; gap:10px; align-items:center;
+  }
+
+  .play-btn{
+    width:56px; height:56px; border-radius:50%; display:grid; place-items:center; background:linear-gradient(180deg,#ff6aa8,#ff4f9c);
+    color:white; font-weight:700; font-size:18px; box-shadow:0 8px 18px rgba(255,80,140,0.22);
+    border:none; cursor:pointer;
+  }
+
+  /* footer names */
+  .names{display:flex; gap:12px; align-items:center; font-weight:700; font-size:16px; margin-top:6px;}
+  .heart-small{width:10px;height:10px;background:#ff2f8a;border-radius:50%;box-shadow:0 4px 10px rgba(255,80,140,0.16);}
+
+  /* fireworks canvas */
+  canvas{position:absolute; inset:0; z-index:4; pointer-events:none;}
+
+  /* small responsive */
+  @media (max-width:420px){
+    .moon{width:120px;height:120px; right:6%}
+    .message{font-size:16px}
+    .title h1{font-size:22px}
+  }
+</style>
+</head>
+<body>
+  <div class="card" id="card">
+    <div class="moon" aria-hidden="true"></div>
+    <div class="lantern" style="left:6%; top:12%; transform-origin:center bottom; animation-delay:0s"></div>
+    <div class="lantern" style="left:26%; top:24%; background:linear-gradient(180deg,#ffd1e8,#ff79c8); animation-delay:0.8s; transform-origin:center bottom;"></div>
+
+    <div style="z-index:6; width:100%; display:flex; flex-direction:column; align-items:center;">
+      <div class="title">
+        <h1>Chúc Trung Thu ấm áp</h1>
+        <p>Gửi: <strong>Phạm Duy Anh 💖 Bùi Thu Hà</strong></p>
+      </div>
+
+      <div class="message" id="message">
+        Đêm rằm thắp sáng trăng vàng — em gửi anh một chiếc đèn lồng tình yêu,  
+        một lời chúc nhẹ nhàng: Mong anh luôn bình an, cười ấm, và ở bên nhau thật lâu.  
+        Trung Thu này, tim em chỉ dành riêng cho anh.
+      </div>
+
+      <div class="names" aria-hidden="true">
+        <div>Phạm Duy Anh</div><div class="heart-small"></div><div>Bùi Thu Hà</div>
+      </div>
+    </div>
+
+    <div class="play-hint" id="playHint" style="z-index:9">
+      <button class="play-btn" id="playBtn" title="Phát / Tạm dừng">▶</button>
+      <div style="font-size:14px">Nhạc nền đã bật — chạm để tắt</div>
+    </div>
+
+    <div class="hearts" id="hearts" aria-hidden="true"></div>
+    <canvas id="fws"></canvas>
+  </div>
+
+  <!-- Audio: replace src with your own file or remote url if you want -->
+  <audio id="bgm" src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_b28b8e3d5d.mp3?filename=sweet-love-13675.mp3" loop crossorigin="anonymous"></audio>
+
+<script>
+/* ------- Audio control & autoplay attempt ------- */
+const audio = document.getElementById('bgm');
+const playBtn = document.getElementById('playBtn');
+const playHint = document.getElementById('playHint');
+
+let playing = false;
+async function tryPlay(){
+  try{
+    await audio.play();
+    playing = true;
+    playBtn.textContent = '❚❚';
+    playHint.style.opacity = 0.95;
+  }catch(e){
+    // autoplay blocked — show hint overlay; wait for user tap
+    playing = false;
+    playBtn.textContent = '▶';
+    // subtle instruction: tap anywhere
+    playHint.querySelector('div').textContent = 'Chạm màn hình để bật nhạc';
+  }
+}
+tryPlay();
+
+// toggle button
+playBtn.addEventListener('click', ()=>{
+  if (playing){ audio.pause(); playing=false; playBtn.textContent='▶'; playHint.querySelector('div').textContent='Nhạc đã tắt'; }
+  else{ audio.play(); playing=true; playBtn.textContent='❚❚'; playHint.querySelector('div').textContent='Nhạc nền đang phát — chạm để tắt'; }
+});
+
+// if user taps card anywhere, try play (helps iOS)
+document.getElementById('card').addEventListener('click', async function onFirstTap(){
+  if (!playing){
+    try{ await audio.play(); playing=true; playBtn.textContent='❚❚'; playHint.querySelector('div').textContent='Nhạc nền đang phát — chạm để tắt'; }
+    catch(e){}
+  }
+});
+
+/* ------- hearts emitter ------- */
+const hearts = document.getElementById('hearts');
+function emitHeart(){
+  const h = document.createElement('div');
+  h.className='heart';
+  const size = 12 + Math.random()*28;
+  h.style.width = h.style.height = size+'px';
+  h.style.left = (10 + Math.random()*80) + '%';
+  h.style.bottom = '-40px';
+  h.style.animationDuration = (6 + Math.random()*6) + 's';
+  h.style.opacity = Math.random()*0.6+0.4;
+  hearts.appendChild(h);
+  setTimeout(()=> h.remove(), 14000);
+}
+setInterval(emitHeart, 550);
+
+/* ------- fireworks canvas ------- */
+const canvas = document.getElementById('fws');
+const ctx = canvas.getContext('2d');
+function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
+resize(); window.addEventListener('resize', resize);
+
+let particles = [];
+function random(min,max){ return Math.random()*(max-min)+min; }
+
+function spawnFirework(x,y){
+  const hue = random(320,360);
+  const count = 18 + Math.floor(Math.random()*22);
+  for(let i=0;i<count;i++){
+    particles.push({
+      x, y,
+      vx: Math.cos((i/count)*Math.PI*2) * random(1.8,5.5),
+      vy: Math.sin((i/count)*Math.PI*2) * random(1.8,5.5),
+      ttl: 60 + Math.random()*40,
+      age:0,
+      hue,
+      size: 2 + Math.random()*3
+    });
+  }
+}
+
+function loop(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach((p,i)=>{
+    p.age++;
+    p.x += p.vx;
+    p.y += p.vy + 0.05*p.age*0.02;
+    p.vx *= 0.99; p.vy *= 0.99;
+    const alpha = Math.max(0, 1 - p.age/p.ttl);
+    ctx.beginPath();
+    ctx.fillStyle = `hsla(${p.hue},85%,60%,${alpha})`;
+    ctx.arc(p.x, p.y, p.size,0,Math.PI*2);
+    ctx.fill();
+    if(p.age>p.ttl) particles.splice(i,1);
+  });
+  requestAnimationFrame(loop);
+}
+loop();
+
+// spawn random fireworks occasionally
+setInterval(()=> spawnFirework(random(100, innerWidth-100), random(80, innerHeight/2)), 2500);
+
+// also spawn on click
+document.getElementById('card').addEventListener('dblclick', (e) => spawnFirework(e.clientX, e.clientY));
+document.getElementById('card').addEventListener('touchstart', (e) => {
+  if(e.touches && e.touches[0]) spawnFirework(e.touches[0].clientX, e.touches[0].clientY);
+});
+
+/* small polish: gently pulse play hint, hide after music plays */
+audio.addEventListener('playing', ()=> {
+  playHint.style.transition = 'transform 0.6s, opacity 0.6s';
+  setTimeout(()=> playHint.style.transform='translateY(20px)', 2500);
+  setTimeout(()=> playHint.style.opacity='0.0', 3200);
+});
+</script>
+</body>
+</html>
