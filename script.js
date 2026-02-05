@@ -1,68 +1,64 @@
-const pages = document.querySelectorAll(".page");
-const book = document.getElementById("book");
-const overlay = document.querySelector(".overlay");
-
-let current = 0;
-
-function showPage(i) {
-  pages.forEach((p, idx) => {
-    p.classList.toggle("active", idx === i);
-  });
-}
-
-function nextPage() {
-  if (current < pages.length - 1) {
-    current++;
-    showPage(current);
-  }
-}
-
-function prevPage() {
-  if (current > 0) {
-    current--;
-    showPage(current);
-  }
-}
-
-/* PHÁO HOA */
-function launchFireworks() {
-  for (let i = 0; i < 30; i++) {
-    const spark = document.createElement("div");
-    spark.style.position = "fixed";
-    spark.style.left = "50%";
-    spark.style.top = "50%";
-    spark.style.width = "6px";
-    spark.style.height = "6px";
-    spark.style.borderRadius = "50%";
-    spark.style.background = `hsl(${Math.random()*360},100%,60%)`;
-    spark.style.transform = `translate(${Math.random()*400-200}px, ${Math.random()*400-200}px)`;
-    spark.style.transition = "1s";
-    document.body.appendChild(spark);
-    setTimeout(() => spark.remove(), 1000);
-  }
+function nextPage(num) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(`page${num}`).classList.add('active');
 }
 
 function accept() {
-  book.classList.add("shake");
-  overlay.classList.add("flash");
-
-  setTimeout(() => {
-    launchFireworks();
-    document.getElementById("thanksText").innerHTML =
-      "Cảm ơn rất nhiều 💖<br>Hẹn gặp bạn đúng ngày 01/03/2026!";
-    current = pages.length - 1;
-    showPage(current);
-  }, 500);
-
-  setTimeout(() => {
-    book.classList.remove("shake");
-    overlay.classList.remove("flash");
-  }, 1000);
+  showPage('acceptPage');
+  startFireworks();
 }
 
-function decline() {
-  document.getElementById("thanksText").innerHTML =
-    "Cảm ơn bạn đã dành thời gian đọc lời mời này 💙";
-  current = pages.length - 1;
-  showPage(current);
+function deny() {
+  showPage('denyPage');
+}
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+/* ===== PHÁO HOA NỔ THẬT ===== */
+const canvas = document.getElementById("fireworks");
+const ctx = canvas.getContext("2d");
+
+function resize() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.onresize = resize;
+resize();
+
+let particles = [];
+
+function startFireworks() {
+  setInterval(() => {
+    for (let i = 0; i < 80; i++) {
+      particles.push({
+        x: canvas.width / 2,
+        y: canvas.height / 2,
+        vx: (Math.random() - 0.5) * 8,
+        vy: (Math.random() - 0.5) * 8,
+        life: 100,
+        color: `hsl(${Math.random() * 360},100%,60%)`
+      });
+    }
+  }, 600);
+  animate();
+}
+
+function animate() {
+  ctx.fillStyle = "rgba(0,0,0,0.2)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  particles.forEach((p, i) => {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.life--;
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+    ctx.fill();
+    if (p.life <= 0) particles.splice(i,1);
+  });
+  requestAnimationFrame(animate);
 }
