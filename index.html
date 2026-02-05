@@ -2,67 +2,49 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Lời mời Kỷ Yếu</title>
+  <title>Lời mời chụp kỷ yếu</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="overlay"></div>
+<!-- Trang 1 -->
+<section class="page active" id="page1">
+  <h1>📸 LỜI MỜI CHỤP KỶ YẾU</h1>
+  <p>Một ngày để lưu giữ thanh xuân của chúng ta.</p>
+  <button onclick="nextPage(2)">Tiếp tục</button>
+</section>
 
-<div class="scene">
-  <div class="book-wrap">
-
-    <!-- GÁY SÁCH -->
-    <div class="spine">
-      <span>KỶ YẾU 2026</span>
-    </div>
-
-    <!-- SÁCH -->
-    <div class="book" id="book">
-
-      <!-- TRANG 1 -->
-      <section class="page active">
-        <h1>📖 LỜI MỜI KỶ YẾU</h1>
-        <p>Thanh xuân chỉ có một lần.</p>
-        <button onclick="nextPage()">➡ Mở sách</button>
-      </section>
-
-      <!-- TRANG 2 -->
-      <section class="page">
-        <h2>📅 Thời gian</h2>
-        <p class="highlight">01 • 03 • 2026</p>
-        <button onclick="nextPage()">➡ Trang tiếp</button>
-        <button onclick="prevPage()">⬅ Quay lại</button>
-      </section>
-
-      <!-- TRANG 3 -->
-      <section class="page">
-        <h2>📍 Địa điểm</h2>
-        <p>Trường PT Nguyễn Mộng Tuân</p>
-        <button onclick="nextPage()">➡ Trang tiếp</button>
-        <button onclick="prevPage()">⬅ Quay lại</button>
-      </section>
-
-      <!-- TRANG 4 -->
-      <section class="page">
-        <h2>💌 Bạn có tham gia không?</h2>
-        <div class="actions">
-          <button class="yes" onclick="accept()">✔ Chấp nhận</button>
-          <button class="no" onclick="decline()">✖ Từ chối</button>
-        </div>
-        <button onclick="prevPage()">⬅ Quay lại</button>
-      </section>
-
-      <!-- TRANG 5 – CẢM ƠN -->
-      <section class="page">
-        <h2 id="thanksTitle">💖 Cảm ơn</h2>
-        <p id="thanksText"></p>
-        <button onclick="prevPage()">⬅ Quay lại</button>
-      </section>
-
-    </div>
+<!-- Trang 2 -->
+<section class="page" id="page2">
+  <h1>⏰ THỜI GIAN & ĐỊA ĐIỂM</h1>
+  <div class="info">
+    <p class="date">📅 01 • 03 • 2026</p>
+    <p>📍 Trường PT Nguyễn Mộng Tuân</p>
   </div>
-</div>
+  <button onclick="nextPage(3)">Tiếp</button>
+</section>
+
+<!-- Trang 3 -->
+<section class="page" id="page3">
+  <h1>💌 Bạn có tham gia không?</h1>
+  <div class="btn-group">
+    <button class="accept" onclick="accept()">Chấp nhận</button>
+    <button class="deny" onclick="deny()">Từ chối</button>
+  </div>
+</section>
+
+<!-- Trang chấp nhận -->
+<section class="page" id="acceptPage">
+  <canvas id="fireworks"></canvas>
+  <h1>🎆 CẢM ƠN BẠN!</h1>
+  <p>Hẹn gặp đúng thời gian – đúng địa điểm.<br>Kỷ niệm này sẽ không bao giờ quên.</p>
+</section>
+
+<!-- Trang từ chối -->
+<section class="page" id="denyPage">
+  <h1>🌿 Cảm ơn bạn</h1>
+  <p>Cảm ơn vì đã dành thời gian đọc lời mời này.<br>Chúc bạn luôn thành công.</p>
+</section>
 
 <script src="script.js"></script>
 </body>
