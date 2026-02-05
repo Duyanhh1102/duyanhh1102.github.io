@@ -1,0 +1,19 @@
+.subtitle { color: var(--accent); }
+.divider {
+  width: 120px;
+  height: 1px;
+  background: var(--accent);
+  margin: 30px auto;
+}
+.big-date {
+  font-size: 64px;
+  color: var(--accent);
+}
+.buttons button {
+  margin: 15px;
+  padding: 14px 36px;
+  border: 1px solid var(--accent);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
