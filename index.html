@@ -1,70 +1,75 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>Lời mời chụp kỷ yếu</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>Lời mời chụp Kỷ Yếu</title>
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<section class="book">
+<div class="scene">
+  <div class="book" id="book">
 
-  <div class="page active">
-    <h1>📸 LỜI MỜI CHỤP KỶ YẾU 📸</h1>
-    <p>Thanh xuân chỉ đến một lần trong đời.</p>
-    <p>Hãy cùng nhau lưu lại những khoảnh khắc đẹp nhất.</p>
-  </div>
+    <!-- Trang 1 -->
+    <div class="page active">
+      <h1>📖 Lời mời Kỷ Yếu</h1>
+      <p class="subtitle">Một cuốn sách nhỏ của thanh xuân</p>
+      <button onclick="nextPage()">Mở sách</button>
+    </div>
 
-  <div class="page">
-    <h2>📅 THỜI GIAN</h2>
-
-    <div class="time-box">
-      <div class="time-date">
-        <span class="day">01</span>
-        <div class="month-year">
-          <span>THÁNG 3</span>
-          <small>2026</small>
-        </div>
-      </div>
-
-      <p class="highlight">
-        🕖 07:00 SÁNG – CHỦ NHẬT
-      </p>
+    <!-- Trang 2 -->
+    <div class="page">
+      <h2>📸 Thư mời</h2>
       <p>
-        Ngày chúng ta cùng nhau ghi dấu một phần thanh xuân.
+        Chúng mình trân trọng mời bạn  
+        tham gia buổi <b>chụp ảnh kỷ yếu</b>  
+        để lưu lại khoảnh khắc đẹp nhất  
+        của tuổi học trò.
       </p>
+
+      <div class="buttons">
+        <button class="accept" onclick="accept()">Chấp nhận</button>
+        <button class="decline" onclick="decline()">Từ chối</button>
+      </div>
     </div>
 
-    <div class="location-box">
-      <p><strong>📍 Địa điểm:</strong></p>
-      <p>Trường THPT … / Studio chụp kỷ yếu …</p>
-    </div>
-  </div>
+    <!-- Trang 3 -->
+    <div class="page">
+      <h2>⏰ Thời gian</h2>
+      <p class="big-date">01 • 03 • 2026</p>
+      <p id="countdown"></p>
 
-  <div class="page">
-    <h2>💌 BẠN CÓ THAM GIA KHÔNG?</h2>
-
-    <div class="btn-group">
-      <button class="btn accept" id="acceptBtn">✅ Chấp nhận</button>
-      <button class="btn decline" id="declineBtn">❌ Từ chối</button>
+      <button onclick="prevPage()">⬅ Quay lại</button>
     </div>
 
-    <p class="response" id="responseText"></p>
+    <!-- Trang 4 -->
+    <div class="page">
+      <h2>📍 Địa điểm</h2>
+      <p>
+        Sân trường thân yêu <br>
+        Nơi bắt đầu – và cũng là nơi lưu giữ kỷ niệm
+      </p>
+
+      <button onclick="prevPage()">⬅ Trang trước</button>
+    </div>
+
+    <!-- Trang 5 -->
+    <div class="page">
+      <h2>✨ Kết</h2>
+      <p>
+        Dù sau này mỗi người một con đường,  
+        mong rằng chúng ta vẫn nhớ về nhau  
+        bằng nụ cười.
+      </p>
+
+      <p class="sign">— Lớp chúng ta —</p>
+      <button onclick="prevPage()">⬅ Đóng sách</button>
+    </div>
+
   </div>
+</div>
 
-  <div class="page">
-    <h2>✨ KẾT</h2>
-    <p>
-      Dù sau này mỗi người một con đường,<br>
-      mong rằng chúng ta vẫn nhớ về nhau bằng nụ cười.
-    </p>
-    <strong>— Lớp chúng ta —</strong>
-  </div>
-
-</section>
-
+<canvas id="fireworks"></canvas>
 <script src="script.js"></script>
 </body>
 </html>
