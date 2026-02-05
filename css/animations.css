@@ -1,0 +1,12 @@
+.scene {
+  transition: opacity 1.2s ease;
+}
+
+.hint {
+  opacity: 0;
+  animation: fadeIn 2s forwards;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
