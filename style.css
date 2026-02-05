@@ -1,0 +1,123 @@
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(135deg, #1d2671, #c33764);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.book {
+  width: 340px;
+  height: 480px;
+  perspective: 1500px;
+}
+
+.page {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  position: absolute;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  transform-origin: left;
+  transform: rotateY(180deg);
+  transition: transform 1s;
+  cursor: pointer;
+}
+
+.page.active {
+  transform: rotateY(0);
+  z-index: 10;
+}
+
+.page h1, h2 {
+  color: #c33764;
+}
+
+.time-box {
+  background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+  padding: 15px;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.time-date {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.day {
+  font-size: 48px;
+  font-weight: bold;
+  color: #c33764;
+  margin-right: 10px;
+}
+
+.month-year span {
+  font-weight: bold;
+}
+
+.highlight {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.location-box {
+  margin-top: 15px;
+  padding: 10px;
+  border-left: 4px solid #c33764;
+}
+
+.btn-group {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.btn {
+  padding: 12px 18px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.accept {
+  background: #4CAF50;
+  color: #fff;
+}
+
+.decline {
+  background: #f44336;
+  color: #fff;
+}
+
+.response {
+  margin-top: 25px;
+  text-align: center;
+  min-height: 40px;
+}
+
+.confetti span {
+  position: fixed;
+  top: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  animation: fall 2s forwards;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
