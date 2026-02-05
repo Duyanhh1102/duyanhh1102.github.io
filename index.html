@@ -1,75 +1,69 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <title>Lời mời chụp Kỷ Yếu</title>
+  <meta charset="UTF-8">
+  <title>Lời mời Kỷ Yếu</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<div class="overlay"></div>
+
 <div class="scene">
-  <div class="book" id="book">
+  <div class="book-wrap">
 
-    <!-- Trang 1 -->
-    <div class="page active">
-      <h1>📖 Lời mời Kỷ Yếu</h1>
-      <p class="subtitle">Một cuốn sách nhỏ của thanh xuân</p>
-      <button onclick="nextPage()">Mở sách</button>
+    <!-- GÁY SÁCH -->
+    <div class="spine">
+      <span>KỶ YẾU 2026</span>
     </div>
 
-    <!-- Trang 2 -->
-    <div class="page">
-      <h2>📸 Thư mời</h2>
-      <p>
-        Chúng mình trân trọng mời bạn  
-        tham gia buổi <b>chụp ảnh kỷ yếu</b>  
-        để lưu lại khoảnh khắc đẹp nhất  
-        của tuổi học trò.
-      </p>
+    <!-- SÁCH -->
+    <div class="book" id="book">
 
-      <div class="buttons">
-        <button class="accept" onclick="accept()">Chấp nhận</button>
-        <button class="decline" onclick="decline()">Từ chối</button>
-      </div>
+      <!-- TRANG 1 -->
+      <section class="page active">
+        <h1>📖 LỜI MỜI KỶ YẾU</h1>
+        <p>Thanh xuân chỉ có một lần.</p>
+        <button onclick="nextPage()">➡ Mở sách</button>
+      </section>
+
+      <!-- TRANG 2 -->
+      <section class="page">
+        <h2>📅 Thời gian</h2>
+        <p class="highlight">01 • 03 • 2026</p>
+        <button onclick="nextPage()">➡ Trang tiếp</button>
+        <button onclick="prevPage()">⬅ Quay lại</button>
+      </section>
+
+      <!-- TRANG 3 -->
+      <section class="page">
+        <h2>📍 Địa điểm</h2>
+        <p>Trường PT Nguyễn Mộng Tuân</p>
+        <button onclick="nextPage()">➡ Trang tiếp</button>
+        <button onclick="prevPage()">⬅ Quay lại</button>
+      </section>
+
+      <!-- TRANG 4 -->
+      <section class="page">
+        <h2>💌 Bạn có tham gia không?</h2>
+        <div class="actions">
+          <button class="yes" onclick="accept()">✔ Chấp nhận</button>
+          <button class="no" onclick="decline()">✖ Từ chối</button>
+        </div>
+        <button onclick="prevPage()">⬅ Quay lại</button>
+      </section>
+
+      <!-- TRANG 5 – CẢM ƠN -->
+      <section class="page">
+        <h2 id="thanksTitle">💖 Cảm ơn</h2>
+        <p id="thanksText"></p>
+        <button onclick="prevPage()">⬅ Quay lại</button>
+      </section>
+
     </div>
-
-    <!-- Trang 3 -->
-    <div class="page">
-      <h2>⏰ Thời gian</h2>
-      <p class="big-date">01 • 03 • 2026</p>
-      <p id="countdown"></p>
-
-      <button onclick="prevPage()">⬅ Quay lại</button>
-    </div>
-
-    <!-- Trang 4 -->
-    <div class="page">
-      <h2>📍 Địa điểm</h2>
-      <p>
-        Sân trường thân yêu <br>
-        Nơi bắt đầu – và cũng là nơi lưu giữ kỷ niệm
-      </p>
-
-      <button onclick="prevPage()">⬅ Trang trước</button>
-    </div>
-
-    <!-- Trang 5 -->
-    <div class="page">
-      <h2>✨ Kết</h2>
-      <p>
-        Dù sau này mỗi người một con đường,  
-        mong rằng chúng ta vẫn nhớ về nhau  
-        bằng nụ cười.
-      </p>
-
-      <p class="sign">— Lớp chúng ta —</p>
-      <button onclick="prevPage()">⬅ Đóng sách</button>
-    </div>
-
   </div>
 </div>
 
-<canvas id="fireworks"></canvas>
 <script src="script.js"></script>
 </body>
 </html>
