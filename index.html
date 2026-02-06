@@ -2,28 +2,119 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Thư mời chụp kỷ yếu</title>
-
+  <title>Một lời mời</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="css/reset.css">
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/animations.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Playfair Display', serif;
+    }
+
+    body {
+      height: 100vh;
+      background: linear-gradient(145deg, #05050f, #000);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      color: white;
+    }
+
+    .bg-stars {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: url("https://i.imgur.com/7b1Z6Bz.png");
+      animation: starsMove 120s linear infinite;
+      opacity: 0.15;
+    }
+
+    @keyframes starsMove {
+      from { background-position: 0 0; }
+      to { background-position: 10000px 5000px; }
+    }
+
+    .container {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 50px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 40px rgba(255,255,255,0.15);
+      animation: fadeIn 2s ease forwards;
+    }
+
+    h1 {
+      font-size: 48px;
+      letter-spacing: 4px;
+      margin-bottom: 25px;
+      animation: glow 2s infinite alternate;
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 1.8;
+      opacity: 0.9;
+      margin-bottom: 40px;
+    }
+
+    .btn {
+      padding: 15px 50px;
+      border-radius: 50px;
+      border: 1px solid rgba(255,255,255,0.6);
+      text-decoration: none;
+      color: white;
+      font-size: 15px;
+      letter-spacing: 3px;
+      transition: 0.4s;
+    }
+
+    .btn:hover {
+      background: rgba(255,255,255,0.15);
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(255,255,255,0.4);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+      to { text-shadow: 0 0 30px rgba(255,255,255,0.8); }
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
 </head>
 
-<body class="page-enter">
+<body>
 
-  <audio id="bgm" src="audio/piano.mp3" preload="auto" loop></audio>
+  <div class="bg-stars"></div>
 
-  <main class="opening">
-    <div class="opening-inner">
-      <h1 class="title">Thư mời chụp kỷ yếu</h1>
-      <p class="subtitle">Một dấu mốc không thể quay lại</p>
+  <div class="container">
+    <h1>THƯ MỜI</h1>
+    <p>
+      Có những khoảnh khắc, chỉ cần một lời mời<br>
+      cũng đủ để trở thành một kỷ niệm đẹp.
+    </p>
 
-      <button id="openBtn">Mở thư mời</button>
-    </div>
-  </main>
+    <a href="invite.html" class="btn">MỞ LỜI MỜI</a>
+  </div>
 
-  <script src="js/transition.js"></script>
+  <audio autoplay loop>
+    <source src="piano.mp3" type="audio/mpeg">
+  </audio>
+
 </body>
 </html>
