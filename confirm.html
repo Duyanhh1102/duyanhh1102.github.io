@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Xác nhận tham dự</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body{
+      margin:0;
+      font-family: "Times New Roman", serif;
+      background: radial-gradient(circle at center, #0a1f2f, #02070d);
+      color:#fff;
+      height:100vh;
+      overflow:hidden;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+    }
+
+    .box{
+      z-index:2;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      padding:70px 60px;
+      border-radius:20px;
+      box-shadow: 0 0 80px rgba(255,255,255,0.08);
+      animation: zoomIn 1.5s ease;
+    }
+
+    h1{
+      font-size:42px;
+      margin-bottom:20px;
+      letter-spacing:2px;
+    }
+
+    p{
+      font-size:20px;
+      opacity:0.9;
+      margin-bottom:40px;
+    }
+
+    .btns{
+      display:flex;
+      gap:30px;
+      justify-content:center;
+    }
+
+    .btn{
+      padding:16px 45px;
+      border-radius:40px;
+      font-size:18px;
+      letter-spacing:2px;
+      cursor:pointer;
+      border:1px solid gold;
+      background: transparent;
+      color:gold;
+      transition:0.4s;
+    }
+
+    .btn:hover{
+      background:gold;
+      color:#000;
+      box-shadow:0 0 30px rgba(255,215,0,0.6);
+      transform: translateY(-3px);
+    }
+
+    canvas{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      z-index:1;
+      pointer-events:none;
+    }
+
+    @keyframes zoomIn{
+      from{opacity:0; transform: scale(0.85);}
+      to{opacity:1; transform: scale(1);}
+    }
+  </style>
+</head>
+
+<body>
+
+<canvas id="fireworks"></canvas>
+
+<div class="box" id="box">
+  <h1>Bạn có tham dự không?</h1>
+  <p>Sự hiện diện của bạn sẽ làm khoảnh khắc này trọn vẹn hơn.</p>
+
+  <div class="btns">
+    <button class="btn" onclick="accept()">Chấp nhận</button>
+    <button class="btn" onclick="decline()">Từ chối</button>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById("fireworks");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+function firework(){
+  const x = Math.random()*canvas.width;
+  const y = Math.random()*canvas.height/2;
+
+  for(let i=0;i<120;i++){
+    particles.push({
+      x,y,
+      vx:(Math.random()-0.5)*6,
+      vy:(Math.random()-0.5)*6,
+      life:100
+    });
+  }
+}
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach((p,i)=>{
+    p.x+=p.vx;
+    p.y+=p.vy;
+    p.life--;
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,2,0,Math.PI*2);
+    ctx.fillStyle="gold";
+    ctx.fill();
+    if(p.life<=0) particles.splice(i,1);
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+
+function accept(){
+  document.getElementById("box").innerHTML = `
+    <h1>Cảm ơn bạn!</h1>
+    <p>Hẹn gặp bạn trong khoảnh khắc đặc biệt nhất ✨</p>
+  `;
+  setInterval(firework,500);
+}
+
+function decline(){
+  document.getElementById("box").innerHTML = `
+    <h1>Cảm ơn bạn đã phản hồi</h1>
+    <p>Dù thế nào, bạn vẫn luôn là một phần của hành trình này.</p>
+  `;
+}
+</script>
+
+</body>
+</html>
