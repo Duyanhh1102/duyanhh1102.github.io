@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Chi tiết buổi chụp</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/animations.css">
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 40px 30px;
+      max-width: 700px;
+      width: 100%;
+      text-align: center;
+      animation: fadeIn 1.5s ease;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+
+    .info {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      opacity: .9;
+      margin-bottom: 30px;
+    }
+
+    .info span {
+      display: block;
+      margin: 8px 0;
+    }
+
+    .btn {
+      padding: 12px 36px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.5);
+      text-decoration: none;
+      color: #fff;
+      transition: .4s;
+    }
+
+    .btn:hover {
+      background: rgba(255,255,255,.2);
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Buổi chụp kỷ yếu</h1>
+
+    <div class="info">
+      <span><b>📍 Địa điểm:</b> Trường PT Nguyễn Mộng Tuân</span>
+      <span><b>📅 Thời gian:</b> Ngày 01 / 03 / 2026</span>
+      <span><b>⏰ Giờ tập trung:</b> 06:30 sáng</span>
+      <span><b>👕 Trang phục:</b> Áo dài – Đồng phục – Tự do</span>
+    </div>
+
+    <a href="confirm.html" class="btn">Tiếp tục</a>
+  </div>
+
+</body>
+</html>
