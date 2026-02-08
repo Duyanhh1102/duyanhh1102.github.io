@@ -8,17 +8,34 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      background: black;
-      color: white;
+      background: #000;
+      color: #fff;
       font-family: 'Montserrat', sans-serif;
       overflow: hidden;
+    }
+
+    /* Background cinematic */
+    .bg {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at bottom, #141414 0%, #000 70%);
+      animation: bgMove 12s ease-in-out infinite alternate;
+      filter: blur(0.3px);
+    }
+
+    @keyframes bgMove {
+      0% { transform: scale(1) translateY(0); }
+      100% { transform: scale(1.05) translateY(-10px); }
+    }
+
+    .vignette {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle, transparent 40%, rgba(0,0,0,.9) 85%);
+      pointer-events: none;
     }
 
     .scene {
@@ -28,99 +45,190 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: radial-gradient(circle at center, #111, #000);
-      transition: opacity 1.2s ease;
+      text-align: center;
+      z-index: 2;
+      transition: opacity 1.3s ease, transform 1.3s ease;
     }
 
     .hidden {
       opacity: 0;
+      transform: scale(0.96);
       pointer-events: none;
     }
 
     .line {
       font-size: 26px;
-      margin: 6px 0;
+      margin: 8px 0;
+      letter-spacing: 2px;
       opacity: 0;
+      filter: blur(6px);
+      transition: opacity 0.8s ease, filter 0.8s ease, transform 0.8s ease;
+      transform: translateY(10px);
       white-space: nowrap;
     }
 
-    .title {
-      margin-top: 30px;
-      font-family: 'Playfair Display', serif;
-      font-size: 48px;
-      font-weight: 700;
-      color: #e7c35a;
-      opacity: 0;
-      transform: scale(0.95);
-      transition: 1.2s ease;
-      letter-spacing: 2px;
+    .line.show {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateY(0);
     }
 
-    .fade-in {
+    .title-wrap {
+      position: relative;
+      margin-top: 34px;
+      overflow: hidden;
+    }
+
+    .title {
+      font-family: 'Playfair Display', serif;
+      font-size: 52px;
+      font-weight: 700;
+      color: #f2cf7a;
+      letter-spacing: 4px;
+      opacity: 0;
+      filter: blur(10px);
+      transform: scale(0.92);
+      transition: 1.2s ease;
+    }
+
+    .title.show {
       opacity: 1;
+      filter: blur(0);
       transform: scale(1);
+    }
+
+    /* Light sweep */
+    .sweep {
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 120%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.25) 50%, transparent 70%);
+      transform: skewX(-15deg);
+      animation: sweep 1.6s ease forwards;
+      animation-delay: 0.2s;
+      pointer-events: none;
+    }
+
+    @keyframes sweep {
+      to { left: 120%; }
+    }
+
+    /* Fade to black */
+    .fade-black {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      opacity: 0;
+      transition: opacity 1.4s ease;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .fade-black.show {
+      opacity: 1;
+    }
+
+    /* Subtle particles */
+    canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="scene" id="scene1">
-    <div class="line" id="l1"></div>
-    <div class="line" id="l2"></div>
-    <div class="line" id="l3"></div>
-    <div class="title" id="title">KỶ YẾU 12A2 – 2026</div>
+  <div class="bg"></div>
+  <canvas id="stars"></canvas>
+  <div class="vignette"></div>
+
+  <div class="scene" id="scene">
+    <div class="line" id="l1">Một hành trình</div>
+    <div class="line" id="l2">Một ký ức</div>
+    <div class="line" id="l3">Một thời thanh xuân</div>
+
+    <div class="title-wrap">
+      <div class="title" id="title">KỶ YẾU 12A2 – 2026</div>
+      <div class="sweep" id="sweep"></div>
+    </div>
   </div>
 
-<script>
-const texts = [
-  "Một hành trình",
-  "Một ký ức",
-  "Một thời thanh xuân"
-];
+  <div class="fade-black" id="fade"></div>
 
-const elements = [
+<script>
+/* Timed cinematic sequence */
+const lines = [
   document.getElementById("l1"),
   document.getElementById("l2"),
   document.getElementById("l3")
 ];
+const title = document.getElementById("title");
+const fade = document.getElementById("fade");
+const scene = document.getElementById("scene");
 
-function typeLine(el, text, speed = 55) {
-  return new Promise(resolve => {
-    let i = 0;
-    el.style.opacity = 1;
-    const interval = setInterval(() => {
-      el.textContent += text[i];
-      i++;
-      if (i === text.length) {
-        clearInterval(interval);
-        resolve();
-      }
-    }, speed);
+function showLine(el, delay) {
+  return new Promise(r => {
+    setTimeout(() => {
+      el.classList.add("show");
+      r();
+    }, delay);
   });
 }
 
 async function playIntro() {
-  await typeLine(elements[0], texts[0]);
-  await new Promise(r => setTimeout(r, 250));
-  await typeLine(elements[1], texts[1]);
-  await new Promise(r => setTimeout(r, 250));
-  await typeLine(elements[2], texts[2]);
+  await showLine(lines[0], 800);
+  await showLine(lines[1], 900);
+  await showLine(lines[2], 900);
 
-  await new Promise(r => setTimeout(r, 800));
+  await new Promise(r => setTimeout(r, 900));
+  title.classList.add("show");
 
-  document.getElementById("title").classList.add("fade-in");
-
-  await new Promise(r => setTimeout(r, 1600));
-
-  document.getElementById("scene1").classList.add("hidden");
+  await new Promise(r => setTimeout(r, 1700));
+  fade.classList.add("show");
+  scene.classList.add("hidden");
 
   setTimeout(() => {
     window.location.href = "invite.html";
-  }, 1200);
+  }, 1500);
 }
 
 playIntro();
+
+/* Subtle star particles */
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+let w, h, stars = [];
+
+function resize() {
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
+  stars = Array.from({length: 80}, () => ({
+    x: Math.random() * w,
+    y: Math.random() * h,
+    r: Math.random() * 1.2 + 0.2,
+    a: Math.random() * 0.6 + 0.2,
+    s: Math.random() * 0.2 + 0.05
+  }));
+}
+window.addEventListener('resize', resize);
+resize();
+
+function draw() {
+  ctx.clearRect(0,0,w,h);
+  stars.forEach(p => {
+    ctx.beginPath();
+    ctx.fillStyle = `rgba(255,255,255,${p.a})`;
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+    ctx.fill();
+    p.y -= p.s;
+    if (p.y < 0) p.y = h;
+  });
+  requestAnimationFrame(draw);
+}
+draw();
 </script>
 
 </body>
