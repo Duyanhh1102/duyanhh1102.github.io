@@ -35,7 +35,7 @@ canvas{
 .title{
   font-size:30px;
   letter-spacing:4px;
-  margin-bottom:25px;
+  margin-bottom:35px;
   text-align:center;
   animation:glow 2s ease-in-out infinite alternate;
 }
@@ -45,81 +45,6 @@ canvas{
   to{text-shadow:0 0 28px #ffd700}
 }
 
-/* HOURGLASS */
-.hourglass{
-  width:130px;
-  height:240px;
-  border:4px solid #ffd700;
-  border-radius:65px;
-  position:relative;
-  overflow:hidden;
-  box-shadow:0 0 45px rgba(255,215,0,.9);
-  margin-bottom:25px;
-  animation:float 5s ease-in-out infinite;
-}
-
-@keyframes float{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-18px)}
-}
-
-.top,.bottom{
-  position:absolute;
-  width:100%;
-  height:50%;
-  overflow:hidden;
-}
-
-.top{top:0;}
-.bottom{bottom:0;}
-
-.sand-top{
-  position:absolute;
-  width:100%;
-  height:100%;
-  background:linear-gradient(#fff6b0,#ffd700,#d4af37);
-  clip-path:polygon(0 0,100% 0,72% 100%,28% 100%);
-  animation:topSand 2s linear forwards;
-}
-
-.sand-bottom{
-  position:absolute;
-  bottom:0;
-  width:100%;
-  height:0%;
-  background:linear-gradient(#ffd700,#d4af37);
-  clip-path:polygon(28% 0,72% 0,100% 100%,0 100%);
-  animation:bottomSand 2s linear forwards;
-}
-
-.stream{
-  position:absolute;
-  top:50%;
-  left:50%;
-  width:3px;
-  height:0;
-  background:#ffd700;
-  transform:translateX(-50%);
-  box-shadow:0 0 14px rgba(255,215,0,.9);
-  animation:streamFlow 2s linear forwards;
-}
-
-@keyframes topSand{
-  from{height:100%}
-  to{height:0}
-}
-
-@keyframes bottomSand{
-  from{height:0}
-  to{height:100%}
-}
-
-@keyframes streamFlow{
-  from{height:0}
-  to{height:100%}
-}
-
-/* TIMER */
 .timer{
   display:flex;
   gap:18px;
@@ -145,7 +70,6 @@ canvas{
   font-size:12px;
   letter-spacing:2px;
 }
-
 </style>
 </head>
 
@@ -157,17 +81,11 @@ canvas{
 
   <div class="title">KHOẢNH KHẮC SẮP MỞ RA</div>
 
-  <div class="hourglass">
-    <div class="top"><div class="sand-top"></div></div>
-    <div class="stream"></div>
-    <div class="bottom"><div class="sand-bottom"></div></div>
-  </div>
-
   <div class="timer">
-    <div class="box"><div class="num">00</div><div class="label">NGÀY</div></div>
-    <div class="box"><div class="num">00</div><div class="label">GIỜ</div></div>
-    <div class="box"><div class="num">00</div><div class="label">PHÚT</div></div>
-    <div class="box"><div class="num" id="sec">02</div><div class="label">GIÂY</div></div>
+    <div class="box"><div class="num" id="days">00</div><div class="label">NGÀY</div></div>
+    <div class="box"><div class="num" id="hours">00</div><div class="label">GIỜ</div></div>
+    <div class="box"><div class="num" id="minutes">00</div><div class="label">PHÚT</div></div>
+    <div class="box"><div class="num" id="seconds">00</div><div class="label">GIÂY</div></div>
   </div>
 
 </div>
@@ -185,11 +103,11 @@ resize();
 addEventListener("resize",resize);
 
 let stars=[];
-for(let i=0;i<150;i++){
+for(let i=0;i<160;i++){
   stars.push({
     x:Math.random()*canvas.width,
     y:Math.random()*canvas.height,
-    r:Math.random()*1.3+0.3,
+    r:Math.random()*1.5+0.3,
     s:Math.random()*0.4+0.1
   });
 }
@@ -208,18 +126,50 @@ function animate(){
 }
 animate();
 
-/* COUNTDOWN 2s → INVITE */
-let time = 2;
-const sec = document.getElementById("sec");
+/* COUNTDOWN TO 23:50:00 02/08 */
+const target = new Date("2026-08-02T23:50:00");
 
-const timer = setInterval(()=>{
-  time--;
-  sec.textContent = "0"+time;
-  if(time<=0){
-    clearInterval(timer);
-    window.location.href="invite.html";
+const daysEl = document.getElementById("days");
+const hoursEl = document.getElementById("hours");
+const minutesEl = document.getElementById("minutes");
+const secondsEl = document.getElementById("seconds");
+
+let finished = false;
+
+function tick(){
+  const now = new Date();
+  let diff = target - now;
+
+  if(diff <= 0 && !finished){
+    finished = true;
+
+    daysEl.textContent = "00";
+    hoursEl.textContent = "00";
+    minutesEl.textContent = "00";
+    secondsEl.textContent = "00";
+
+    setTimeout(()=>{
+      window.location.href="invite.html";
+    },2000);
+    return;
   }
-},1000);
+
+  if(diff > 0){
+    let d = Math.floor(diff / (1000*60*60*24));
+    let h = Math.floor((diff / (1000*60*60)) % 24);
+    let m = Math.floor((diff / (1000*60)) % 60);
+    let s = Math.floor((diff / 1000) % 60);
+
+    daysEl.textContent = String(d).padStart(2,'0');
+    hoursEl.textContent = String(h).padStart(2,'0');
+    minutesEl.textContent = String(m).padStart(2,'0');
+    secondsEl.textContent = String(s).padStart(2,'0');
+  }
+
+  requestAnimationFrame(tick);
+}
+
+tick();
 </script>
 
 </body>
