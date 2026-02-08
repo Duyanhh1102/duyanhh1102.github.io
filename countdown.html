@@ -129,34 +129,43 @@ function animate(){
 animate();
 
 
-/* COUNTDOWN — 00:00:00 NGÀY 02/09 */
-const target = new Date("2026-02-00T00:10:00+07:00").getTime();
+/* ===== COUNTDOWN KỈ YẾU ===== */
+/* 09/02/2026 – 00:19 */
+
+const target = new Date(2026, 1, 9, 0, 19, 0).getTime();
+
+const daysEl = document.getElementById("days");
+const hoursEl = document.getElementById("hours");
+const minutesEl = document.getElementById("minutes");
+const secondsEl = document.getElementById("seconds");
 
 function tick(){
   const now = Date.now();
   let diff = target - now;
-
   if(diff < 0) diff = 0;
 
   const d = Math.floor(diff / 86400000);
-  const h = Math.floor(diff % 86400000 / 3600000);
-  const m = Math.floor(diff % 3600000 / 60000);
-  const s = Math.floor(diff % 60000 / 1000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
 
-  days.textContent = String(d).padStart(2,'0');
-  hours.textContent = String(h).padStart(2,'0');
-  minutes.textContent = String(m).padStart(2,'0');
-  seconds.textContent = String(s).padStart(2,'0');
-
-  requestAnimationFrame(tick);
+  daysEl.textContent = String(d).padStart(2,'0');
+  hoursEl.textContent = String(h).padStart(2,'0');
+  minutesEl.textContent = String(m).padStart(2,'0');
+  secondsEl.textContent = String(s).padStart(2,'0');
 }
+
+setInterval(tick,1000);
 tick();
 
 
-/* AUTO CHUYỂN TRANG SAU 3.5 GIÂY */
+/* ===== AUTO CHUYỂN SANG INVITE ===== */
+/* Không bắt người ta chờ — chỉ show countdown 3.5s */
+
 setTimeout(() => {
   window.location.href = "invite.html";
 }, 3500);
+
 </script>
 
 </body>
