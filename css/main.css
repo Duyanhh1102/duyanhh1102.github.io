@@ -1,0 +1,101 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: #000;
+  overflow: hidden;
+  color: #fff;
+}
+
+.scene {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at center, #111 0%, #000 70%);
+  transition: opacity 2s ease;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.active {
+  opacity: 1;
+}
+
+/* INTRO */
+.intro-text {
+  text-align: center;
+  animation: fadeIn 3s ease forwards;
+}
+
+.line {
+  font-size: 26px;
+  letter-spacing: 2px;
+  opacity: 0;
+  animation: textFade 2s ease forwards;
+}
+
+.line:nth-child(1) { animation-delay: 0.5s; }
+.line:nth-child(2) { animation-delay: 2s; }
+.line:nth-child(3) { animation-delay: 3.5s; }
+
+.title {
+  margin-top: 25px;
+  font-size: 48px;
+  letter-spacing: 4px;
+  color: #f5d37a;
+  opacity: 0;
+  animation: textFade 2.5s ease forwards;
+  animation-delay: 5s;
+}
+
+/* PHONG THƯ */
+.envelope-box {
+  text-align: center;
+  animation: fadeIn 2s ease forwards;
+}
+
+.envelope {
+  width: 200px;
+  height: 130px;
+  background: linear-gradient(135deg,#f5d37a,#c8a951);
+  border-radius: 10px;
+  box-shadow: 0 0 25px rgba(245,211,122,0.6);
+  margin: auto;
+}
+
+#openBtn {
+  margin-top: 30px;
+  padding: 12px 40px;
+  font-size: 16px;
+  letter-spacing: 3px;
+  border: none;
+  border-radius: 30px;
+  background: linear-gradient(135deg,#f5d37a,#c8a951);
+  color: #000;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#openBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px rgba(245,211,122,0.8);
+}
+
+@keyframes textFade {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
