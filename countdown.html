@@ -8,74 +8,151 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Playfair Display',serif}
-
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Playfair Display',serif;}
 body{
   background:black;
   color:#d4af37;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
   overflow:hidden;
+  height:100vh;
 }
 
+/* STAR */
 canvas{
   position:fixed;
   inset:0;
   z-index:0;
 }
 
-.wrap{
-  position:relative;
+/* MAIN */
+.main{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
   z-index:5;
-  text-align:center;
 }
 
+/* TITLE */
 .title{
   font-size:28px;
-  letter-spacing:3px;
-  margin-bottom:26px;
+  letter-spacing:4px;
+  margin-bottom:35px;
+  text-align:center;
+  animation:glow 3s ease-in-out infinite alternate;
 }
 
+@keyframes glow{
+  from{text-shadow:0 0 6px #d4af37}
+  to{text-shadow:0 0 18px #ffd700}
+}
+
+/* TIMER */
 .timer{
   display:flex;
-  gap:18px;
-  justify-content:center;
+  gap:22px;
 }
 
 .box{
-  width:90px;
-  height:110px;
+  width:110px;
+  height:120px;
   border:2px solid #d4af37;
   border-radius:14px;
   display:flex;
   flex-direction:column;
-  justify-content:center;
   align-items:center;
-  box-shadow:0 0 25px rgba(212,175,55,.25);
+  justify-content:center;
   backdrop-filter:blur(4px);
+  box-shadow:0 0 20px rgba(212,175,55,.4);
 }
 
 .num{
-  font-size:40px;
-  font-weight:600;
+  font-size:42px;
 }
 
 .label{
-  font-size:11px;
+  font-size:12px;
   letter-spacing:2px;
+  opacity:.85;
+}
+
+/* HOURGLASS */
+.hourglass-wrap{
+  margin-top:40px;
+  animation:float 5s ease-in-out infinite;
+}
+
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-18px)}
+}
+
+.hourglass{
+  width:80px;
+  height:140px;
+  border:3px solid #d4af37;
+  border-radius:14px;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 0 25px rgba(255,215,0,.6);
+  animation:rotate 14s linear infinite;
+}
+
+@keyframes rotate{
+  0%,45%{transform:rotate(0)}
+  50%,95%{transform:rotate(180deg)}
+  100%{transform:rotate(360deg)}
+}
+
+/* Sand */
+.sand-top,.sand-bottom{
+  position:absolute;
+  width:100%;
+  height:50%;
+  left:0;
+  background:linear-gradient(#ffd700,#d4af37);
+}
+
+.sand-top{
+  top:0;
+  animation:sandTop 7s linear infinite;
+}
+
+.sand-bottom{
+  bottom:0;
+  animation:sandBottom 7s linear infinite;
+}
+
+@keyframes sandTop{
+  0%{height:50%}
+  50%{height:0}
+  100%{height:50%}
+}
+
+@keyframes sandBottom{
+  0%{height:0}
+  50%{height:50%}
+  100%{height:0}
+}
+
+/* CENTER STREAM */
+.stream{
+  position:absolute;
+  width:3px;
+  height:100%;
+  background:#ffd700;
+  left:50%;
+  top:0;
+  transform:translateX(-50%);
   opacity:.7;
 }
 
-.fade{
-  position:fixed;
-  inset:0;
-  background:black;
-  opacity:0;
-  pointer-events:none;
-  transition:1.4s;
-  z-index:20;
+/* MOBILE */
+@media(max-width:600px){
+  .box{width:78px;height:90px}
+  .num{font-size:28px}
+  .title{font-size:20px}
 }
 </style>
 </head>
@@ -83,26 +160,22 @@ canvas{
 <body>
 
 <canvas id="stars"></canvas>
-<div class="fade" id="fade"></div>
 
-<div class="wrap">
+<div class="main">
   <div class="title">ĐẾM NGƯỢC KHOẢNH KHẮC ĐẶC BIỆT</div>
+
   <div class="timer">
-    <div class="box">
-      <div class="num" id="days">00</div>
-      <div class="label">NGÀY</div>
-    </div>
-    <div class="box">
-      <div class="num" id="hours">00</div>
-      <div class="label">GIỜ</div>
-    </div>
-    <div class="box">
-      <div class="num" id="minutes">00</div>
-      <div class="label">PHÚT</div>
-    </div>
-    <div class="box">
-      <div class="num" id="seconds">00</div>
-      <div class="label">GIÂY</div>
+    <div class="box"><div class="num" id="days">00</div><div class="label">NGÀY</div></div>
+    <div class="box"><div class="num" id="hours">00</div><div class="label">GIỜ</div></div>
+    <div class="box"><div class="num" id="minutes">00</div><div class="label">PHÚT</div></div>
+    <div class="box"><div class="num" id="seconds">00</div><div class="label">GIÂY</div></div>
+  </div>
+
+  <div class="hourglass-wrap">
+    <div class="hourglass">
+      <div class="sand-top"></div>
+      <div class="stream"></div>
+      <div class="sand-bottom"></div>
     </div>
   </div>
 </div>
@@ -120,11 +193,11 @@ resize();
 addEventListener("resize",resize);
 
 let stars=[];
-for(let i=0;i<180;i++){
+for(let i=0;i<160;i++){
   stars.push({
     x:Math.random()*canvas.width,
     y:Math.random()*canvas.height,
-    r:Math.random()*1.6+0.4,
+    r:Math.random()*1.4+0.3,
     s:Math.random()*0.5+0.1
   });
 }
@@ -144,37 +217,27 @@ function animate(){
 animate();
 
 /* COUNTDOWN */
-const targetDate = new Date("2026-03-20T07:00:00").getTime(); // ⚠️ đổi ngày giờ kỷ yếu tại đây
+const targetDate = new Date("2026-03-18T07:00:00").getTime();
 
-const daysEl=document.getElementById("days");
-const hoursEl=document.getElementById("hours");
-const minutesEl=document.getElementById("minutes");
-const secondsEl=document.getElementById("seconds");
-const fade=document.getElementById("fade");
-
-function updateCountdown(){
+function update(){
   const now = new Date().getTime();
-  const diff = targetDate - now;
+  let diff = targetDate - now;
 
-  if(diff <= 0){
-    fade.style.opacity = 1;
-    setTimeout(()=> location.href="invite.html",1200);
-    return;
-  }
+  if(diff < 0) diff = 0;
 
-  const days = Math.floor(diff / (1000*60*60*24));
-  const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-  const minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
-  const seconds = Math.floor((diff % (1000*60)) / 1000);
+  const d = Math.floor(diff/(1000*60*60*24));
+  const h = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+  const m = Math.floor((diff%(1000*60*60))/(1000*60));
+  const s = Math.floor((diff%(1000*60))/1000);
 
-  daysEl.innerText = String(days).padStart(2,'0');
-  hoursEl.innerText = String(hours).padStart(2,'0');
-  minutesEl.innerText = String(minutes).padStart(2,'0');
-  secondsEl.innerText = String(seconds).padStart(2,'0');
+  days.textContent = d.toString().padStart(2,"0");
+  hours.textContent = h.toString().padStart(2,"0");
+  minutes.textContent = m.toString().padStart(2,"0");
+  seconds.textContent = s.toString().padStart(2,"0");
 }
 
-setInterval(updateCountdown,1000);
-updateCountdown();
+update();
+setInterval(update,1000);
 </script>
 
 </body>
