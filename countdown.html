@@ -16,14 +16,12 @@ body{
   height:100vh;
 }
 
-/* STAR */
 canvas{
   position:fixed;
   inset:0;
   z-index:0;
 }
 
-/* MAIN */
 .main{
   position:fixed;
   inset:0;
@@ -34,7 +32,6 @@ canvas{
   z-index:5;
 }
 
-/* TITLE */
 .title{
   font-size:30px;
   letter-spacing:4px;
@@ -48,7 +45,6 @@ canvas{
   to{text-shadow:0 0 28px #ffd700}
 }
 
-/* TIMER */
 .timer{
   display:flex;
   gap:20px;
@@ -69,6 +65,7 @@ canvas{
 
 .num{
   font-size:44px;
+  transition:.25s ease;
 }
 
 .label{
@@ -115,7 +112,7 @@ canvas{
   height:100%;
   background:linear-gradient(#fff1a8,#ffd700,#d4af37);
   clip-path:polygon(0 0,100% 0,70% 100%,30% 100%);
-  animation:sandTop 12s linear infinite;
+  animation:sandTop 10s linear infinite;
 }
 
 .sand-bottom{
@@ -125,19 +122,19 @@ canvas{
   height:0;
   background:linear-gradient(#ffd700,#d4af37);
   clip-path:polygon(30% 0,70% 0,100% 100%,0 100%);
-  animation:sandBottom 12s linear infinite;
+  animation:sandBottom 10s linear infinite;
 }
 
 .stream{
   position:absolute;
   top:50%;
   left:50%;
-  width:3px;
+  width:2px;
   height:0;
   background:#ffd700;
   transform:translateX(-50%);
   box-shadow:0 0 12px rgba(255,215,0,.9);
-  animation:streamFlow 12s linear infinite;
+  animation:streamFlow 10s linear infinite;
 }
 
 @keyframes sandTop{
@@ -154,12 +151,11 @@ canvas{
 
 @keyframes streamFlow{
   0%{height:0}
-  10%{height:100%}
-  90%{height:100%}
+  8%{height:100%}
+  92%{height:100%}
   100%{height:0}
 }
 
-/* MOBILE */
 @media(max-width:600px){
   .box{width:78px;height:92px}
   .num{font-size:28px}
@@ -185,13 +181,9 @@ canvas{
 
   <div class="hourglass-wrap">
     <div class="hourglass">
-      <div class="glass-top">
-        <div class="sand-top"></div>
-      </div>
+      <div class="glass-top"><div class="sand-top"></div></div>
       <div class="stream"></div>
-      <div class="glass-bottom">
-        <div class="sand-bottom"></div>
-      </div>
+      <div class="glass-bottom"><div class="sand-bottom"></div></div>
     </div>
   </div>
 </div>
@@ -213,8 +205,8 @@ for(let i=0;i<160;i++){
   stars.push({
     x:Math.random()*canvas.width,
     y:Math.random()*canvas.height,
-    r:Math.random()*1.5+0.4,
-    s:Math.random()*0.5+0.15
+    r:Math.random()*1.4+0.4,
+    s:Math.random()*0.4+0.15
   });
 }
 
@@ -232,27 +224,32 @@ function animate(){
 }
 animate();
 
-/* COUNTDOWN */
-const targetDate = new Date("2026-03-18T07:00:00").getTime();
 
-function update(){
-  const now = new Date().getTime();
-  let diff = targetDate - now;
+/* COUNTDOWN — CHUẨN GIỜ VIỆT NAM, KHÔNG GIẬT */
+const target = new Date("2026-03-18T07:00:00+07:00").getTime();
 
+function tick(){
+  const now = Date.now();
+  let diff = target - now;
   if(diff < 0) diff = 0;
 
-  const d = Math.floor(diff/(1000*60*60*24));
-  const h = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
-  const m = Math.floor((diff%(1000*60*60))/(1000*60));
-  const s = Math.floor((diff%(1000*60))/1000);
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor(diff % 86400000 / 3600000);
+  const m = Math.floor(diff % 3600000 / 60000);
+  const s = Math.floor(diff % 60000 / 1000);
 
-  days.textContent = d.toString().padStart(2,"0");
-  hours.textContent = h.toString().padStart(2,"0");
-  minutes.textContent = m.toString().padStart(2,"0");
-  seconds.textContent = s.toString().padStart(2,"0");
+  days.textContent = String(d).padStart(2,'0');
+  hours.textContent = String(h).padStart(2,'0');
+  minutes.textContent = String(m).padStart(2,'0');
+  seconds.textContent = String(s).padStart(2,'0');
+
+  if(diff <= 0){
+    // location.href = "invite.html"; // sau này mở
+  }
+
+  requestAnimationFrame(tick);
 }
-update();
-setInterval(update,1000);
+tick();
 </script>
 
 </body>
