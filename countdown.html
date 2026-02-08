@@ -65,7 +65,6 @@ canvas{
 
 .num{
   font-size:44px;
-  transition:.25s ease;
 }
 
 .label{
@@ -74,7 +73,7 @@ canvas{
   opacity:.85;
 }
 
-/* REALISTIC HOURGLASS */
+/* HOURGLASS */
 .hourglass-wrap{
   margin-top:45px;
   animation:float 6s ease-in-out infinite;
@@ -93,7 +92,6 @@ canvas{
   border-radius:60px;
   overflow:hidden;
   box-shadow:0 0 40px rgba(255,215,0,.7);
-  background:rgba(0,0,0,.3);
 }
 
 .glass-top,.glass-bottom{
@@ -112,7 +110,7 @@ canvas{
   height:100%;
   background:linear-gradient(#fff1a8,#ffd700,#d4af37);
   clip-path:polygon(0 0,100% 0,70% 100%,30% 100%);
-  animation:sandTop 10s linear infinite;
+  animation:sandTop 2s linear forwards;
 }
 
 .sand-bottom{
@@ -122,7 +120,7 @@ canvas{
   height:0;
   background:linear-gradient(#ffd700,#d4af37);
   clip-path:polygon(30% 0,70% 0,100% 100%,0 100%);
-  animation:sandBottom 10s linear infinite;
+  animation:sandBottom 2s linear forwards;
 }
 
 .stream{
@@ -133,34 +131,22 @@ canvas{
   height:0;
   background:#ffd700;
   transform:translateX(-50%);
-  box-shadow:0 0 12px rgba(255,215,0,.9);
-  animation:streamFlow 10s linear infinite;
+  animation:streamFlow 2s linear forwards;
 }
 
 @keyframes sandTop{
-  0%{height:100%}
-  50%{height:0}
-  100%{height:100%}
+  from{height:100%}
+  to{height:0}
 }
 
 @keyframes sandBottom{
-  0%{height:0}
-  50%{height:100%}
-  100%{height:0}
+  from{height:0}
+  to{height:100%}
 }
 
 @keyframes streamFlow{
-  0%{height:0}
-  8%{height:100%}
-  92%{height:100%}
-  100%{height:0}
-}
-
-@media(max-width:600px){
-  .box{width:78px;height:92px}
-  .num{font-size:28px}
-  .title{font-size:20px}
-  .hourglass{width:90px;height:170px}
+  from{height:0}
+  to{height:100%}
 }
 </style>
 </head>
@@ -173,10 +159,10 @@ canvas{
   <div class="title">ĐẾM NGƯỢC KHOẢNH KHẮC ĐẶC BIỆT</div>
 
   <div class="timer">
-    <div class="box"><div class="num" id="days">00</div><div class="label">NGÀY</div></div>
-    <div class="box"><div class="num" id="hours">00</div><div class="label">GIỜ</div></div>
-    <div class="box"><div class="num" id="minutes">00</div><div class="label">PHÚT</div></div>
-    <div class="box"><div class="num" id="seconds">00</div><div class="label">GIÂY</div></div>
+    <div class="box"><div class="num">00</div><div class="label">NGÀY</div></div>
+    <div class="box"><div class="num">00</div><div class="label">GIỜ</div></div>
+    <div class="box"><div class="num">00</div><div class="label">PHÚT</div></div>
+    <div class="box"><div class="num" id="sec">02</div><div class="label">GIÂY</div></div>
   </div>
 
   <div class="hourglass-wrap">
@@ -224,32 +210,18 @@ function animate(){
 }
 animate();
 
+/* COUNTDOWN 2 GIÂY → CHUYỂN TRANG */
+let time = 2;
+const sec = document.getElementById("sec");
 
-/* COUNTDOWN — CHUẨN GIỜ VIỆT NAM, KHÔNG GIẬT */
-const target = new Date("2026-03-18T07:00:00+07:00").getTime();
-
-function tick(){
-  const now = Date.now();
-  let diff = target - now;
-  if(diff < 0) diff = 0;
-
-  const d = Math.floor(diff / 86400000);
-  const h = Math.floor(diff % 86400000 / 3600000);
-  const m = Math.floor(diff % 3600000 / 60000);
-  const s = Math.floor(diff % 60000 / 1000);
-
-  days.textContent = String(d).padStart(2,'0');
-  hours.textContent = String(h).padStart(2,'0');
-  minutes.textContent = String(m).padStart(2,'0');
-  seconds.textContent = String(s).padStart(2,'0');
-
-  if(diff <= 0){
-    // location.href = "invite.html"; // sau này mở
+const timer = setInterval(() => {
+  time--;
+  sec.textContent = "0" + time;
+  if(time <= 0){
+    clearInterval(timer);
+    window.location.href = "invite.html";
   }
-
-  requestAnimationFrame(tick);
-}
-tick();
+},1000);
 </script>
 
 </body>
