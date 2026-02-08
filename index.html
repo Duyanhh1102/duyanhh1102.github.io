@@ -1,173 +1,190 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>Thư mời kỷ yếu 12A2</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Thư mời kỷ yếu 12A2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Google Font Serif sang trọng -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Playfair Display', serif;
-    }
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Playfair Display',serif;}
+body{background:black;overflow:hidden;height:100vh;color:#d4af37}
 
-    body {
-      background: black;
-      overflow: hidden;
-      height: 100vh;
-    }
+/* STAR BACKGROUND */
+canvas{
+  position:fixed;
+  inset:0;
+  z-index:0;
+}
 
-    /* INTRO TEXT */
-    #intro {
-      position: fixed;
-      inset: 0;
-      background: black;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      color: #d4af37;
-      text-align: center;
-      z-index: 10;
-    }
+/* INTRO */
+#intro{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  z-index:5;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(6px);
+  transition:2s;
+}
 
-    .line {
-      font-size: 28px;
-      opacity: 0;
-      filter: blur(10px);
-      transition: 1.5s ease;
-      margin: 12px 0;
-    }
+.line{
+  font-size:30px;
+  opacity:0;
+  transform:translateY(20px);
+  filter:blur(10px);
+  transition:1.5s ease;
+  margin:12px 0;
+  text-align:center;
+}
 
-    .line.show {
-      opacity: 1;
-      filter: blur(0);
-    }
+.line.show{
+  opacity:1;
+  filter:blur(0);
+  transform:translateY(0);
+}
 
-    /* MAIN SCENE */
-    #scene {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at center, #1a1a1a 0%, #000 70%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transition: 2s ease;
-    }
+/* SCENE */
+#scene{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  opacity:0;
+  transition:2s ease;
+  z-index:3;
+}
 
-    #scene.show {
-      opacity: 1;
-    }
+#scene.show{opacity:1}
 
-    /* Dust */
-    .dust {
-      position: absolute;
-      width: 2px;
-      height: 2px;
-      background: rgba(255, 215, 0, 0.5);
-      border-radius: 50%;
-      animation: float 12s linear infinite;
-    }
+/* ENVELOPE */
+#envelope{
+  width:280px;
+  cursor:pointer;
+  filter:drop-shadow(0 0 30px rgba(255,215,0,0.4));
+  animation:float 4s ease-in-out infinite;
+  transition:.4s;
+}
 
-    @keyframes float {
-      from { transform: translateY(0); }
-      to { transform: translateY(-120vh); }
-    }
+#envelope:hover{
+  transform:scale(1.08);
+  filter:drop-shadow(0 0 60px rgba(255,215,0,0.8));
+}
 
-    /* Envelope */
-    #envelope {
-      width: 260px;
-      cursor: pointer;
-      filter: drop-shadow(0 0 25px rgba(255,215,0,0.25));
-      animation: floatEnvelope 4s ease-in-out infinite;
-      transition: 0.4s ease;
-    }
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-18px)}
+}
 
-    #envelope:hover {
-      transform: scale(1.05);
-      filter: drop-shadow(0 0 40px rgba(255,215,0,0.6));
-    }
+.hint{
+  margin-top:22px;
+  font-size:14px;
+  letter-spacing:2px;
+  animation:blink 2s infinite;
+}
 
-    @keyframes floatEnvelope {
-      0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-15px); }
-    }
+@keyframes blink{
+  0%,100%{opacity:1}
+  50%{opacity:.35}
+}
 
-    .hint {
-      position: absolute;
-      bottom: 15%;
-      color: rgba(255,215,0,0.7);
-      letter-spacing: 1px;
-      font-size: 14px;
-      animation: blink 2s infinite;
-    }
-
-    @keyframes blink {
-      0%,100% { opacity: 1; }
-      50% { opacity: 0.3; }
-    }
-
-  </style>
+/* FADE OUT */
+#fade{
+  position:fixed;
+  inset:0;
+  background:black;
+  opacity:0;
+  pointer-events:none;
+  transition:1.4s;
+  z-index:20;
+}
+</style>
 </head>
+
 <body>
 
-<!-- INTRO -->
+<canvas id="stars"></canvas>
+
+<div id="fade"></div>
+
 <div id="intro">
   <div class="line" id="l1">Chúng ta đã cùng nhau đi qua một chặng đường…</div>
   <div class="line" id="l2">Và hôm nay, là lúc lưu giữ những ký ức đẹp nhất.</div>
   <div class="line" id="l3">Một lời mời trang trọng dành riêng cho bạn.</div>
 </div>
 
-<!-- MAIN SCENE -->
 <div id="scene">
-  <img id="envelope" src="https://i.imgur.com/Ph6JfFX.png" alt="Phong thư">
-  <div class="hint">Nhấn để mở thư</div>
+  <img id="envelope" src="https://cdn-icons-png.flaticon.com/512/561/561127.png">
+  <div class="hint">NHẤN ĐỂ MỞ THƯ</div>
 </div>
 
 <script>
-  const l1 = document.getElementById("l1");
-  const l2 = document.getElementById("l2");
-  const l3 = document.getElementById("l3");
-  const intro = document.getElementById("intro");
-  const scene = document.getElementById("scene");
+/* STAR BACKGROUND */
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
 
-  setTimeout(() => l1.classList.add("show"), 800);
-  setTimeout(() => l2.classList.add("show"), 2600);
-  setTimeout(() => l3.classList.add("show"), 4400);
+function resize(){
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+}
+resize();
+addEventListener("resize",resize);
 
-  setTimeout(() => {
-    intro.style.opacity = 0;
-    setTimeout(() => {
-      intro.style.display = "none";
-      scene.classList.add("show");
-      createDust();
-    }, 2000);
-  }, 7200);
+let stars=[];
+for(let i=0;i<160;i++){
+  stars.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    r:Math.random()*1.5+0.3,
+    s:Math.random()*0.4+0.1
+  });
+}
 
-  function createDust() {
-    for (let i = 0; i < 40; i++) {
-      let d = document.createElement("div");
-      d.className = "dust";
-      d.style.left = Math.random() * 100 + "vw";
-      d.style.top = Math.random() * 100 + "vh";
-      d.style.animationDuration = (8 + Math.random() * 12) + "s";
-      scene.appendChild(d);
-    }
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  for(let s of stars){
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fillStyle="rgba(255,215,100,.9)";
+    ctx.fill();
+    s.y-=s.s;
+    if(s.y<0) s.y=canvas.height;
   }
+  requestAnimationFrame(animate);
+}
+animate();
 
-  document.getElementById("envelope").onclick = () => {
-    document.body.style.transition = "1.2s";
-    document.body.style.background = "white";
-    setTimeout(() => {
-      window.location.href = "invite.html";
-    }, 900);
-  }
+/* INTRO TEXT */
+const l1=document.getElementById("l1");
+const l2=document.getElementById("l2");
+const l3=document.getElementById("l3");
+const intro=document.getElementById("intro");
+const scene=document.getElementById("scene");
+const fade=document.getElementById("fade");
+
+setTimeout(()=>l1.classList.add("show"),800);
+setTimeout(()=>l2.classList.add("show"),2600);
+setTimeout(()=>l3.classList.add("show"),4400);
+
+setTimeout(()=>{
+  intro.style.opacity=0;
+  setTimeout(()=>{
+    intro.style.display="none";
+    scene.classList.add("show");
+  },1800);
+},7200);
+
+/* CLICK */
+document.getElementById("envelope").onclick=()=>{
+  fade.style.opacity=1;
+  setTimeout(()=>location.href="invite.html",1100);
+}
 </script>
 
 </body>
