@@ -1,234 +1,173 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kỷ Yếu 12A2 – 2026</title>
+  <meta charset="UTF-8">
+  <title>Thư mời kỷ yếu 12A2</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <!-- Google Font Serif sang trọng -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
 
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Playfair Display', serif;
+    }
 
     body {
-      background: #000;
-      color: #fff;
-      font-family: 'Montserrat', sans-serif;
+      background: black;
       overflow: hidden;
+      height: 100vh;
     }
 
-    /* Background cinematic */
-    .bg {
+    /* INTRO TEXT */
+    #intro {
       position: fixed;
       inset: 0;
-      background: radial-gradient(ellipse at bottom, #141414 0%, #000 70%);
-      animation: bgMove 12s ease-in-out infinite alternate;
-      filter: blur(0.3px);
-    }
-
-    @keyframes bgMove {
-      0% { transform: scale(1) translateY(0); }
-      100% { transform: scale(1.05) translateY(-10px); }
-    }
-
-    .vignette {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle, transparent 40%, rgba(0,0,0,.9) 85%);
-      pointer-events: none;
-    }
-
-    .scene {
-      position: fixed;
-      inset: 0;
+      background: black;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
+      flex-direction: column;
+      color: #d4af37;
       text-align: center;
-      z-index: 2;
-      transition: opacity 1.3s ease, transform 1.3s ease;
-    }
-
-    .hidden {
-      opacity: 0;
-      transform: scale(0.96);
-      pointer-events: none;
+      z-index: 10;
     }
 
     .line {
-      font-size: 26px;
-      margin: 8px 0;
-      letter-spacing: 2px;
+      font-size: 28px;
       opacity: 0;
-      filter: blur(6px);
-      transition: opacity 0.8s ease, filter 0.8s ease, transform 0.8s ease;
-      transform: translateY(10px);
-      white-space: nowrap;
+      filter: blur(10px);
+      transition: 1.5s ease;
+      margin: 12px 0;
     }
 
     .line.show {
       opacity: 1;
       filter: blur(0);
-      transform: translateY(0);
     }
 
-    .title-wrap {
-      position: relative;
-      margin-top: 34px;
-      overflow: hidden;
-    }
-
-    .title {
-      font-family: 'Playfair Display', serif;
-      font-size: 52px;
-      font-weight: 700;
-      color: #f2cf7a;
-      letter-spacing: 4px;
+    /* MAIN SCENE */
+    #scene {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, #1a1a1a 0%, #000 70%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       opacity: 0;
-      filter: blur(10px);
-      transform: scale(0.92);
-      transition: 1.2s ease;
+      transition: 2s ease;
     }
 
-    .title.show {
+    #scene.show {
       opacity: 1;
-      filter: blur(0);
-      transform: scale(1);
     }
 
-    /* Light sweep */
-    .sweep {
+    /* Dust */
+    .dust {
       position: absolute;
-      top: 0;
-      left: -120%;
-      width: 120%;
-      height: 100%;
-      background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.25) 50%, transparent 70%);
-      transform: skewX(-15deg);
-      animation: sweep 1.6s ease forwards;
-      animation-delay: 0.2s;
-      pointer-events: none;
+      width: 2px;
+      height: 2px;
+      background: rgba(255, 215, 0, 0.5);
+      border-radius: 50%;
+      animation: float 12s linear infinite;
     }
 
-    @keyframes sweep {
-      to { left: 120%; }
+    @keyframes float {
+      from { transform: translateY(0); }
+      to { transform: translateY(-120vh); }
     }
 
-    /* Fade to black */
-    .fade-black {
-      position: fixed;
-      inset: 0;
-      background: #000;
-      opacity: 0;
-      transition: opacity 1.4s ease;
-      z-index: 3;
-      pointer-events: none;
+    /* Envelope */
+    #envelope {
+      width: 260px;
+      cursor: pointer;
+      filter: drop-shadow(0 0 25px rgba(255,215,0,0.25));
+      animation: floatEnvelope 4s ease-in-out infinite;
+      transition: 0.4s ease;
     }
 
-    .fade-black.show {
-      opacity: 1;
+    #envelope:hover {
+      transform: scale(1.05);
+      filter: drop-shadow(0 0 40px rgba(255,215,0,0.6));
     }
 
-    /* Subtle particles */
-    canvas {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
+    @keyframes floatEnvelope {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
     }
+
+    .hint {
+      position: absolute;
+      bottom: 15%;
+      color: rgba(255,215,0,0.7);
+      letter-spacing: 1px;
+      font-size: 14px;
+      animation: blink 2s infinite;
+    }
+
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
   </style>
 </head>
-
 <body>
 
-  <div class="bg"></div>
-  <canvas id="stars"></canvas>
-  <div class="vignette"></div>
+<!-- INTRO -->
+<div id="intro">
+  <div class="line" id="l1">Chúng ta đã cùng nhau đi qua một chặng đường…</div>
+  <div class="line" id="l2">Và hôm nay, là lúc lưu giữ những ký ức đẹp nhất.</div>
+  <div class="line" id="l3">Một lời mời trang trọng dành riêng cho bạn.</div>
+</div>
 
-  <div class="scene" id="scene">
-    <div class="line" id="l1">Một hành trình</div>
-    <div class="line" id="l2">Một ký ức</div>
-    <div class="line" id="l3">Một thời thanh xuân</div>
-
-    <div class="title-wrap">
-      <div class="title" id="title">KỶ YẾU 12A2 – 2026</div>
-      <div class="sweep" id="sweep"></div>
-    </div>
-  </div>
-
-  <div class="fade-black" id="fade"></div>
+<!-- MAIN SCENE -->
+<div id="scene">
+  <img id="envelope" src="https://i.imgur.com/Ph6JfFX.png" alt="Phong thư">
+  <div class="hint">Nhấn để mở thư</div>
+</div>
 
 <script>
-/* Timed cinematic sequence */
-const lines = [
-  document.getElementById("l1"),
-  document.getElementById("l2"),
-  document.getElementById("l3")
-];
-const title = document.getElementById("title");
-const fade = document.getElementById("fade");
-const scene = document.getElementById("scene");
+  const l1 = document.getElementById("l1");
+  const l2 = document.getElementById("l2");
+  const l3 = document.getElementById("l3");
+  const intro = document.getElementById("intro");
+  const scene = document.getElementById("scene");
 
-function showLine(el, delay) {
-  return new Promise(r => {
-    setTimeout(() => {
-      el.classList.add("show");
-      r();
-    }, delay);
-  });
-}
-
-async function playIntro() {
-  await showLine(lines[0], 800);
-  await showLine(lines[1], 900);
-  await showLine(lines[2], 900);
-
-  await new Promise(r => setTimeout(r, 900));
-  title.classList.add("show");
-
-  await new Promise(r => setTimeout(r, 1700));
-  fade.classList.add("show");
-  scene.classList.add("hidden");
+  setTimeout(() => l1.classList.add("show"), 800);
+  setTimeout(() => l2.classList.add("show"), 2600);
+  setTimeout(() => l3.classList.add("show"), 4400);
 
   setTimeout(() => {
-    window.location.href = "invite.html";
-  }, 1500);
-}
+    intro.style.opacity = 0;
+    setTimeout(() => {
+      intro.style.display = "none";
+      scene.classList.add("show");
+      createDust();
+    }, 2000);
+  }, 7200);
 
-playIntro();
+  function createDust() {
+    for (let i = 0; i < 40; i++) {
+      let d = document.createElement("div");
+      d.className = "dust";
+      d.style.left = Math.random() * 100 + "vw";
+      d.style.top = Math.random() * 100 + "vh";
+      d.style.animationDuration = (8 + Math.random() * 12) + "s";
+      scene.appendChild(d);
+    }
+  }
 
-/* Subtle star particles */
-const canvas = document.getElementById('stars');
-const ctx = canvas.getContext('2d');
-let w, h, stars = [];
-
-function resize() {
-  w = canvas.width = window.innerWidth;
-  h = canvas.height = window.innerHeight;
-  stars = Array.from({length: 80}, () => ({
-    x: Math.random() * w,
-    y: Math.random() * h,
-    r: Math.random() * 1.2 + 0.2,
-    a: Math.random() * 0.6 + 0.2,
-    s: Math.random() * 0.2 + 0.05
-  }));
-}
-window.addEventListener('resize', resize);
-resize();
-
-function draw() {
-  ctx.clearRect(0,0,w,h);
-  stars.forEach(p => {
-    ctx.beginPath();
-    ctx.fillStyle = `rgba(255,255,255,${p.a})`;
-    ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-    ctx.fill();
-    p.y -= p.s;
-    if (p.y < 0) p.y = h;
-  });
-  requestAnimationFrame(draw);
-}
-draw();
+  document.getElementById("envelope").onclick = () => {
+    document.body.style.transition = "1.2s";
+    document.body.style.background = "white";
+    setTimeout(() => {
+      window.location.href = "invite.html";
+    }, 900);
+  }
 </script>
 
 </body>
