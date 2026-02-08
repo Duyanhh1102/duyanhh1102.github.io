@@ -2,13 +2,13 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Countdown</title>
+<title>Đếm ngược kỷ yếu 12A2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Playfair Display',serif}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Playfair Display',serif;}
 body{
   background:black;
   color:#ffd700;
@@ -16,28 +16,46 @@ body{
   height:100vh;
 }
 
-canvas{position:fixed;inset:0;z-index:0}
+canvas{
+  position:fixed;
+  inset:0;
+  z-index:0;
+}
 
 .main{
   position:fixed;
   inset:0;
   display:flex;
-  flex-direction:column;
   align-items:center;
   justify-content:center;
-  gap:30px;
+  flex-direction:column;
   z-index:5;
 }
 
 .title{
   font-size:30px;
   letter-spacing:4px;
-  text-shadow:0 0 30px gold;
+  margin-bottom:25px;
+  text-align:center;
+  animation:glow 2s ease-in-out infinite alternate;
 }
 
-/* ===== REAL HOURGLASS ===== */
-.hourglass-wrap{
-  animation:float 6s ease-in-out infinite;
+@keyframes glow{
+  from{text-shadow:0 0 10px #d4af37}
+  to{text-shadow:0 0 28px #ffd700}
+}
+
+/* HOURGLASS */
+.hourglass{
+  width:130px;
+  height:240px;
+  border:4px solid #ffd700;
+  border-radius:65px;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 0 45px rgba(255,215,0,.9);
+  margin-bottom:25px;
+  animation:float 5s ease-in-out infinite;
 }
 
 @keyframes float{
@@ -45,86 +63,60 @@ canvas{position:fixed;inset:0;z-index:0}
   50%{transform:translateY(-18px)}
 }
 
-.hourglass{
-  width:160px;
-  height:280px;
-  position:relative;
-}
-
-/* outer frame */
-.frame{
+.top,.bottom{
   position:absolute;
-  inset:0;
-  border:4px solid #ffd700;
-  border-radius:80px;
-  box-shadow:0 0 40px rgba(255,215,0,.8);
-}
-
-/* glass cones */
-.top-glass,.bottom-glass{
-  position:absolute;
-  left:50%;
-  transform:translateX(-50%);
-  width:120px;
-  height:120px;
+  width:100%;
+  height:50%;
   overflow:hidden;
 }
 
-.top-glass{
-  top:10px;
-  clip-path:polygon(0 0,100% 0,60% 100%,40% 100%);
-}
+.top{top:0;}
+.bottom{bottom:0;}
 
-.bottom-glass{
-  bottom:10px;
-  clip-path:polygon(40% 0,60% 0,100% 100%,0 100%);
-}
-
-/* sand */
 .sand-top{
+  position:absolute;
   width:100%;
   height:100%;
-  background:linear-gradient(#fff1a8,#ffd700,#d4af37);
-  animation:sandTop 2s linear forwards;
+  background:linear-gradient(#fff6b0,#ffd700,#d4af37);
+  clip-path:polygon(0 0,100% 0,72% 100%,28% 100%);
+  animation:topSand 2s linear forwards;
 }
 
 .sand-bottom{
-  width:100%;
-  height:0;
-  background:linear-gradient(#ffd700,#d4af37);
   position:absolute;
   bottom:0;
-  animation:sandBottom 2s linear forwards;
+  width:100%;
+  height:0%;
+  background:linear-gradient(#ffd700,#d4af37);
+  clip-path:polygon(28% 0,72% 0,100% 100%,0 100%);
+  animation:bottomSand 2s linear forwards;
 }
 
-/* falling sand */
 .stream{
   position:absolute;
   top:50%;
   left:50%;
-  transform:translate(-50%,-50%);
   width:3px;
   height:0;
   background:#ffd700;
-  box-shadow:0 0 10px gold;
+  transform:translateX(-50%);
+  box-shadow:0 0 14px rgba(255,215,0,.9);
   animation:streamFlow 2s linear forwards;
 }
 
-@keyframes sandTop{
+@keyframes topSand{
   from{height:100%}
   to{height:0}
 }
 
-@keyframes sandBottom{
+@keyframes bottomSand{
   from{height:0}
   to{height:100%}
 }
 
 @keyframes streamFlow{
-  0%{height:0}
-  15%{height:110px}
-  85%{height:110px}
-  100%{height:0}
+  from{height:0}
+  to{height:100%}
 }
 
 /* TIMER */
@@ -137,7 +129,7 @@ canvas{position:fixed;inset:0;z-index:0}
   width:95px;
   height:110px;
   border:2px solid #ffd700;
-  border-radius:14px;
+  border-radius:16px;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -145,8 +137,14 @@ canvas{position:fixed;inset:0;z-index:0}
   box-shadow:0 0 25px rgba(255,215,0,.6);
 }
 
-.num{font-size:40px}
-.label{font-size:12px;letter-spacing:2px;opacity:.9}
+.num{
+  font-size:42px;
+}
+
+.label{
+  font-size:12px;
+  letter-spacing:2px;
+}
 
 </style>
 </head>
@@ -156,22 +154,13 @@ canvas{position:fixed;inset:0;z-index:0}
 <canvas id="stars"></canvas>
 
 <div class="main">
+
   <div class="title">KHOẢNH KHẮC SẮP MỞ RA</div>
 
-  <div class="hourglass-wrap">
-    <div class="hourglass">
-      <div class="frame"></div>
-
-      <div class="top-glass">
-        <div class="sand-top"></div>
-      </div>
-
-      <div class="stream"></div>
-
-      <div class="bottom-glass">
-        <div class="sand-bottom"></div>
-      </div>
-    </div>
+  <div class="hourglass">
+    <div class="top"><div class="sand-top"></div></div>
+    <div class="stream"></div>
+    <div class="bottom"><div class="sand-bottom"></div></div>
   </div>
 
   <div class="timer">
@@ -180,27 +169,28 @@ canvas{position:fixed;inset:0;z-index:0}
     <div class="box"><div class="num">00</div><div class="label">PHÚT</div></div>
     <div class="box"><div class="num" id="sec">02</div><div class="label">GIÂY</div></div>
   </div>
+
 </div>
 
 <script>
-/* STAR BG */
-const canvas=document.getElementById("stars");
-const ctx=canvas.getContext("2d");
+/* STAR BACKGROUND */
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
 
 function resize(){
-  canvas.width=innerWidth;
-  canvas.height=innerHeight;
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
 }
 resize();
 addEventListener("resize",resize);
 
 let stars=[];
-for(let i=0;i<180;i++){
+for(let i=0;i<150;i++){
   stars.push({
     x:Math.random()*canvas.width,
     y:Math.random()*canvas.height,
-    r:Math.random()*1.5+0.4,
-    s:Math.random()*0.5+0.2
+    r:Math.random()*1.3+0.3,
+    s:Math.random()*0.4+0.1
   });
 }
 
@@ -209,7 +199,7 @@ function animate(){
   for(let s of stars){
     ctx.beginPath();
     ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-    ctx.fillStyle="rgba(255,215,120,.95)";
+    ctx.fillStyle="rgba(255,215,120,.9)";
     ctx.fill();
     s.y-=s.s;
     if(s.y<0) s.y=canvas.height;
@@ -218,14 +208,14 @@ function animate(){
 }
 animate();
 
-/* 2s → invite */
-let t=2;
-const sec=document.getElementById("sec");
+/* COUNTDOWN 2s → INVITE */
+let time = 2;
+const sec = document.getElementById("sec");
 
-const timer=setInterval(()=>{
-  t--;
-  sec.textContent="0"+t;
-  if(t<=0){
+const timer = setInterval(()=>{
+  time--;
+  sec.textContent = "0"+time;
+  if(time<=0){
     clearInterval(timer);
     window.location.href="invite.html";
   }
