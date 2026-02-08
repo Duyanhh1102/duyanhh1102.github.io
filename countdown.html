@@ -33,9 +33,9 @@ canvas{
 }
 
 .title{
-  font-size:30px;
+  font-size:28px;
   letter-spacing:4px;
-  margin-bottom:35px;
+  margin-bottom:30px;
   text-align:center;
   animation:glow 3s ease-in-out infinite alternate;
 }
@@ -45,14 +45,16 @@ canvas{
   to{text-shadow:0 0 28px #ffd700}
 }
 
+/* TIMER */
 .timer{
   display:flex;
   gap:20px;
+  margin-top:25px;
 }
 
 .box{
-  width:110px;
-  height:125px;
+  width:100px;
+  height:115px;
   border:2px solid #ffd700;
   border-radius:16px;
   display:flex;
@@ -64,53 +66,74 @@ canvas{
 }
 
 .num{
-  font-size:44px;
+  font-size:42px;
 }
 
 .label{
-  font-size:12px;
+  font-size:11px;
   letter-spacing:2px;
   opacity:.85;
 }
 
-/* HOURGLASS */
+/* HOURGLASS REAL */
 .hourglass-wrap{
-  margin-top:45px;
-  animation:float 6s ease-in-out infinite;
+  animation:float 5s ease-in-out infinite;
 }
 
 @keyframes float{
   0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-20px)}
+  50%{transform:translateY(-18px)}
 }
 
 .hourglass{
-  width:120px;
-  height:220px;
+  width:140px;
+  height:240px;
   position:relative;
-  border:4px solid #ffd700;
-  border-radius:60px;
-  overflow:hidden;
-  box-shadow:0 0 40px rgba(255,215,0,.7);
+  filter: drop-shadow(0 0 40px rgba(255,215,0,.9));
 }
 
-.glass-top,.glass-bottom{
+.hg-top, .hg-bottom{
   position:absolute;
+  left:0;
   width:100%;
   height:50%;
+  border:4px solid #ffd700;
+  background:rgba(0,0,0,.35);
+}
+
+.hg-top{
+  top:0;
+  border-radius:70px 70px 30px 30px;
   overflow:hidden;
 }
 
-.glass-top{top:0;}
-.glass-bottom{bottom:0;}
+.hg-bottom{
+  bottom:0;
+  border-radius:30px 30px 70px 70px;
+  overflow:hidden;
+}
 
+.neck{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:16px;
+  height:18px;
+  background:#ffd700;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  box-shadow:0 0 15px rgba(255,215,0,.9);
+}
+
+/* SAND */
 .sand-top{
   position:absolute;
+  bottom:0;
   width:100%;
   height:100%;
-  background:linear-gradient(#fff1a8,#ffd700,#d4af37);
+  background:linear-gradient(#fff4b0,#ffd700,#d4af37);
   clip-path:polygon(0 0,100% 0,70% 100%,30% 100%);
-  animation:sandTop 2s linear forwards;
+  animation:topSand 2s linear forwards;
 }
 
 .sand-bottom{
@@ -120,33 +143,38 @@ canvas{
   height:0;
   background:linear-gradient(#ffd700,#d4af37);
   clip-path:polygon(30% 0,70% 0,100% 100%,0 100%);
-  animation:sandBottom 2s linear forwards;
+  animation:bottomSand 2s linear forwards;
 }
 
 .stream{
   position:absolute;
   top:50%;
   left:50%;
-  width:2px;
+  width:3px;
   height:0;
   background:#ffd700;
   transform:translateX(-50%);
   animation:streamFlow 2s linear forwards;
 }
 
-@keyframes sandTop{
+@keyframes topSand{
   from{height:100%}
   to{height:0}
 }
-
-@keyframes sandBottom{
+@keyframes bottomSand{
   from{height:0}
   to{height:100%}
 }
-
 @keyframes streamFlow{
   from{height:0}
-  to{height:100%}
+  to{height:85px}
+}
+
+/* MOBILE */
+@media(max-width:600px){
+  .hourglass{width:110px;height:190px}
+  .box{width:80px;height:95px}
+  .num{font-size:30px}
 }
 </style>
 </head>
@@ -156,7 +184,17 @@ canvas{
 <canvas id="stars"></canvas>
 
 <div class="main">
-  <div class="title">ĐẾM NGƯỢC KHOẢNH KHẮC ĐẶC BIỆT</div>
+
+  <div class="hourglass-wrap">
+    <div class="hourglass">
+      <div class="hg-top"><div class="sand-top"></div></div>
+      <div class="neck"></div>
+      <div class="stream"></div>
+      <div class="hg-bottom"><div class="sand-bottom"></div></div>
+    </div>
+  </div>
+
+  <div class="title">KHOẢNH KHẮC SẮP MỞ RA</div>
 
   <div class="timer">
     <div class="box"><div class="num">00</div><div class="label">NGÀY</div></div>
@@ -165,13 +203,6 @@ canvas{
     <div class="box"><div class="num" id="sec">02</div><div class="label">GIÂY</div></div>
   </div>
 
-  <div class="hourglass-wrap">
-    <div class="hourglass">
-      <div class="glass-top"><div class="sand-top"></div></div>
-      <div class="stream"></div>
-      <div class="glass-bottom"><div class="sand-bottom"></div></div>
-    </div>
-  </div>
 </div>
 
 <script>
@@ -191,8 +222,8 @@ for(let i=0;i<160;i++){
   stars.push({
     x:Math.random()*canvas.width,
     y:Math.random()*canvas.height,
-    r:Math.random()*1.4+0.4,
-    s:Math.random()*0.4+0.15
+    r:Math.random()*1.5+0.4,
+    s:Math.random()*0.5+0.2
   });
 }
 
@@ -210,14 +241,14 @@ function animate(){
 }
 animate();
 
-/* COUNTDOWN 2 GIÂY → CHUYỂN TRANG */
+/* COUNTDOWN 2s → INVITE */
 let time = 2;
 const sec = document.getElementById("sec");
 
-const timer = setInterval(() => {
+const timer = setInterval(()=>{
   time--;
-  sec.textContent = "0" + time;
-  if(time <= 0){
+  sec.textContent = "0"+time;
+  if(time<=0){
     clearInterval(timer);
     window.location.href = "invite.html";
   }
