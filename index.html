@@ -4,28 +4,124 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kỷ Yếu 12A2 – 2026</title>
-  <link rel="stylesheet" href="css/main.css" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: black;
+      color: white;
+      font-family: 'Montserrat', sans-serif;
+      overflow: hidden;
+    }
+
+    .scene {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at center, #111, #000);
+      transition: opacity 1.2s ease;
+    }
+
+    .hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .line {
+      font-size: 26px;
+      margin: 6px 0;
+      opacity: 0;
+      white-space: nowrap;
+    }
+
+    .title {
+      margin-top: 30px;
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      font-weight: 700;
+      color: #e7c35a;
+      opacity: 0;
+      transform: scale(0.95);
+      transition: 1.2s ease;
+      letter-spacing: 2px;
+    }
+
+    .fade-in {
+      opacity: 1;
+      transform: scale(1);
+    }
+  </style>
 </head>
+
 <body>
 
-  <!-- CINEMATIC INTRO -->
-  <section id="intro" class="scene active">
-    <div class="intro-text">
-      <p class="line">Một hành trình</p>
-      <p class="line">Một ký ức</p>
-      <p class="line">Một thời thanh xuân</p>
-      <h1 class="title">KỶ YẾU 12A2 – 2026</h1>
-    </div>
-  </section>
+  <div class="scene" id="scene1">
+    <div class="line" id="l1"></div>
+    <div class="line" id="l2"></div>
+    <div class="line" id="l3"></div>
+    <div class="title" id="title">KỶ YẾU 12A2 – 2026</div>
+  </div>
 
-  <!-- PHONG THƯ -->
-  <section id="envelope" class="scene hidden">
-    <div class="envelope-box">
-      <div class="envelope"></div>
-      <button id="openBtn">MỞ THƯ</button>
-    </div>
-  </section>
+<script>
+const texts = [
+  "Một hành trình",
+  "Một ký ức",
+  "Một thời thanh xuân"
+];
 
-  <script src="js/main.js"></script>
+const elements = [
+  document.getElementById("l1"),
+  document.getElementById("l2"),
+  document.getElementById("l3")
+];
+
+function typeLine(el, text, speed = 55) {
+  return new Promise(resolve => {
+    let i = 0;
+    el.style.opacity = 1;
+    const interval = setInterval(() => {
+      el.textContent += text[i];
+      i++;
+      if (i === text.length) {
+        clearInterval(interval);
+        resolve();
+      }
+    }, speed);
+  });
+}
+
+async function playIntro() {
+  await typeLine(elements[0], texts[0]);
+  await new Promise(r => setTimeout(r, 250));
+  await typeLine(elements[1], texts[1]);
+  await new Promise(r => setTimeout(r, 250));
+  await typeLine(elements[2], texts[2]);
+
+  await new Promise(r => setTimeout(r, 800));
+
+  document.getElementById("title").classList.add("fade-in");
+
+  await new Promise(r => setTimeout(r, 1600));
+
+  document.getElementById("scene1").classList.add("hidden");
+
+  setTimeout(() => {
+    window.location.href = "invite.html";
+  }, 1200);
+}
+
+playIntro();
+</script>
+
 </body>
 </html>
