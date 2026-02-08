@@ -80,7 +80,6 @@ canvas{
 <canvas id="stars"></canvas>
 
 <div class="main">
-
   <div class="title">KHOẢNH KHẮC SẮP MỞ RA</div>
 
   <div class="timer">
@@ -89,11 +88,10 @@ canvas{
     <div class="box"><div class="num" id="minutes">00</div><div class="label">PHÚT</div></div>
     <div class="box"><div class="num" id="seconds">00</div><div class="label">GIÂY</div></div>
   </div>
-
 </div>
 
 <script>
-/* STAR BACKGROUND */
+/* BACKGROUND SAO */
 const canvas = document.getElementById("stars");
 const ctx = canvas.getContext("2d");
 
@@ -105,12 +103,12 @@ resize();
 addEventListener("resize",resize);
 
 let stars=[];
-for(let i=0;i<150;i++){
+for(let i=0;i<160;i++){
   stars.push({
     x:Math.random()*canvas.width,
     y:Math.random()*canvas.height,
-    r:Math.random()*1.4+0.3,
-    s:Math.random()*0.4+0.1
+    r:Math.random()*1.5+0.4,
+    s:Math.random()*0.6+0.2
   });
 }
 
@@ -128,44 +126,33 @@ function animate(){
 }
 animate();
 
-
-/* ===== COUNTDOWN KỈ YẾU ===== */
-/* 09/02/2026 – 00:19 */
-
-const target = new Date(2026, 1, 9, 0, 19, 0).getTime();
-
-const daysEl = document.getElementById("days");
-const hoursEl = document.getElementById("hours");
-const minutesEl = document.getElementById("minutes");
-const secondsEl = document.getElementById("seconds");
+/* COUNTDOWN CHUẨN */
+const target = new Date("2026-03-01T00:00:00+07:00").getTime();
 
 function tick(){
   const now = Date.now();
   let diff = target - now;
+
   if(diff < 0) diff = 0;
 
   const d = Math.floor(diff / 86400000);
-  const h = Math.floor((diff % 86400000) / 3600000);
-  const m = Math.floor((diff % 3600000) / 60000);
-  const s = Math.floor((diff % 60000) / 1000);
+  const h = Math.floor(diff % 86400000 / 3600000);
+  const m = Math.floor(diff % 3600000 / 60000);
+  const s = Math.floor(diff % 60000 / 1000);
 
-  daysEl.textContent = String(d).padStart(2,'0');
-  hoursEl.textContent = String(h).padStart(2,'0');
-  minutesEl.textContent = String(m).padStart(2,'0');
-  secondsEl.textContent = String(s).padStart(2,'0');
+  days.textContent = String(d).padStart(2,'0');
+  hours.textContent = String(h).padStart(2,'0');
+  minutes.textContent = String(m).padStart(2,'0');
+  seconds.textContent = String(s).padStart(2,'0');
+
+  requestAnimationFrame(tick);
 }
-
-setInterval(tick,1000);
 tick();
 
-
-/* ===== AUTO CHUYỂN SANG INVITE ===== */
-/* Không bắt người ta chờ — chỉ show countdown 3.5s */
-
+/* AUTO CHUYỂN TRANG SAU 3.5 GIÂY */
 setTimeout(() => {
   window.location.href = "invite.html";
 }, 3500);
-
 </script>
 
 </body>
