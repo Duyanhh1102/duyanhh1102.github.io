@@ -33,9 +33,9 @@ canvas{
 }
 
 .title{
-  font-size:30px;
+  font-size:28px;
   letter-spacing:4px;
-  margin-bottom:35px;
+  margin-bottom:30px;
   text-align:center;
   animation:glow 2s ease-in-out infinite alternate;
 }
@@ -51,7 +51,7 @@ canvas{
 }
 
 .box{
-  width:95px;
+  width:90px;
   height:110px;
   border:2px solid #ffd700;
   border-radius:16px;
@@ -60,15 +60,17 @@ canvas{
   align-items:center;
   justify-content:center;
   box-shadow:0 0 25px rgba(255,215,0,.6);
+  backdrop-filter: blur(6px);
 }
 
 .num{
-  font-size:42px;
+  font-size:38px;
 }
 
 .label{
   font-size:12px;
   letter-spacing:2px;
+  opacity:.85;
 }
 </style>
 </head>
@@ -103,11 +105,11 @@ resize();
 addEventListener("resize",resize);
 
 let stars=[];
-for(let i=0;i<160;i++){
+for(let i=0;i<150;i++){
   stars.push({
     x:Math.random()*canvas.width,
     y:Math.random()*canvas.height,
-    r:Math.random()*1.5+0.3,
+    r:Math.random()*1.4+0.3,
     s:Math.random()*0.4+0.1
   });
 }
@@ -126,50 +128,35 @@ function animate(){
 }
 animate();
 
-/* COUNTDOWN TO 23:50:00 02/08 */
-const target = new Date("2026-08-02T23:50:00");
 
-const daysEl = document.getElementById("days");
-const hoursEl = document.getElementById("hours");
-const minutesEl = document.getElementById("minutes");
-const secondsEl = document.getElementById("seconds");
-
-let finished = false;
+/* COUNTDOWN — 00:00:00 NGÀY 02/09 */
+const target = new Date("2026-09-02T00:00:00+07:00").getTime();
 
 function tick(){
-  const now = new Date();
+  const now = Date.now();
   let diff = target - now;
 
-  if(diff <= 0 && !finished){
-    finished = true;
+  if(diff < 0) diff = 0;
 
-    daysEl.textContent = "00";
-    hoursEl.textContent = "00";
-    minutesEl.textContent = "00";
-    secondsEl.textContent = "00";
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor(diff % 86400000 / 3600000);
+  const m = Math.floor(diff % 3600000 / 60000);
+  const s = Math.floor(diff % 60000 / 1000);
 
-    setTimeout(()=>{
-      window.location.href="invite.html";
-    },2000);
-    return;
-  }
-
-  if(diff > 0){
-    let d = Math.floor(diff / (1000*60*60*24));
-    let h = Math.floor((diff / (1000*60*60)) % 24);
-    let m = Math.floor((diff / (1000*60)) % 60);
-    let s = Math.floor((diff / 1000) % 60);
-
-    daysEl.textContent = String(d).padStart(2,'0');
-    hoursEl.textContent = String(h).padStart(2,'0');
-    minutesEl.textContent = String(m).padStart(2,'0');
-    secondsEl.textContent = String(s).padStart(2,'0');
-  }
+  days.textContent = String(d).padStart(2,'0');
+  hours.textContent = String(h).padStart(2,'0');
+  minutes.textContent = String(m).padStart(2,'0');
+  seconds.textContent = String(s).padStart(2,'0');
 
   requestAnimationFrame(tick);
 }
-
 tick();
+
+
+/* AUTO CHUYỂN TRANG SAU 3.5 GIÂY */
+setTimeout(() => {
+  window.location.href = "invite.html";
+}, 3500);
 </script>
 
 </body>
