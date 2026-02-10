@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Hoàn tất xác nhận</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+min-height:100vh;
+background:radial-gradient(circle at center,#111 0%,#000 70%);
+display:flex;align-items:center;justify-content:center;
+font-family:'Montserrat',sans-serif;
+color:#f5e8c8;
+overflow:hidden
+}
+
+canvas{
+position:fixed;
+inset:0;
+z-index:0;
+}
+
+.wrap{
+text-align:center;
+padding:40px 28px;
+max-width:620px;
+position:relative;
+z-index:5;
+}
+
+.line{
+width:120px;
+height:2px;
+background:linear-gradient(90deg,transparent,#ffd98a,transparent);
+margin:18px auto;
+opacity:0;
+animation:fadeUp 1.2s forwards;
+animation-delay:1.5s
+}
+
+h1, p, .quote, .signature{
+opacity:0;
+transform:translateY(12px);
+animation:fadeUp 1.2s forwards;
+}
+
+h1{
+font-family:'Playfair Display',serif;
+font-size:32px;
+letter-spacing:4px;
+margin-bottom:6px;
+color:#ffd98a;
+text-shadow:0 0 15px rgba(255,215,120,.5);
+animation-delay:.3s
+}
+
+p{
+font-size:15px;
+line-height:1.9;
+letter-spacing:1.2px;
+opacity:.95;
+margin-bottom:18px;
+animation-delay:1.1s
+}
+
+.quote{
+font-style:italic;
+opacity:.85;
+font-size:14px;
+letter-spacing:1px;
+animation-delay:2.1s
+}
+
+.signature{
+margin-top:26px;
+font-family:'Playfair Display',serif;
+font-size:18px;
+letter-spacing:3px;
+color:#ffbdbd;
+text-shadow:0 0 12px rgba(255,189,189,.6);
+animation-delay:3.2s
+}
+
+@keyframes fadeUp{
+to{opacity:1;transform:translateY(0)}
+}
+
+/* fade out toàn màn */
+.fade-out{
+animation:fadeOut 2s forwards;
+}
+
+@keyframes fadeOut{
+to{opacity:0;filter:blur(8px)}
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="stars"></canvas>
+
+<div class="wrap" id="wrap">
+  <h1>HOÀN TẤT XÁC NHẬN</h1>
+  <div class="line"></div>
+
+  <p>
+    Cảm ơn bạn đã dành thời gian xác nhận tham dự.<br>
+    Sự hiện diện của bạn là niềm vinh hạnh lớn lao<br>
+    và góp phần làm nên khoảnh khắc trọn vẹn nhất 🤍
+  </p>
+
+  <p class="quote">
+    “Những khoảnh khắc đẹp nhất luôn trở nên ý nghĩa hơn<br>
+    khi được sẻ chia cùng những người trân quý.”
+  </p>
+
+  <div class="signature">— Duy Anh —</div>
+</div>
+
+<script>
+/* PARTICLE STAR BACKGROUND */
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
+
+function resize(){
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+}
+resize();
+addEventListener("resize",resize);
+
+let stars=[];
+for(let i=0;i<140;i++){
+  stars.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    r:Math.random()*1.3+0.3,
+    s:Math.random()*0.3+0.1
+  });
+}
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  for(let s of stars){
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fillStyle="rgba(255,215,120,.9)";
+    ctx.fill();
+    s.y-=s.s;
+    if(s.y<0) s.y=canvas.height;
+  }
+  requestAnimationFrame(animate);
+}
+animate();
+
+/* AUTO FADE OUT */
+setTimeout(()=>{
+  document.getElementById("wrap").classList.add("fade-out");
+},9000);
+</script>
+
+</body>
+</html>
