@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Đã ghi nhận</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+min-height:100vh;
+background:radial-gradient(circle at center,#111 0%,#000 70%);
+display:flex;align-items:center;justify-content:center;
+font-family:'Montserrat',sans-serif;
+color:#f5e8c8;
+overflow:hidden
+}
+
+canvas{
+position:fixed;
+inset:0;
+z-index:0;
+}
+
+.wrap{
+text-align:center;
+padding:42px 28px;
+max-width:620px;
+position:relative;
+z-index:5;
+animation:fadeIn 1.6s ease forwards;
+}
+
+.line{
+width:130px;
+height:2px;
+margin:0 auto 26px;
+background:linear-gradient(90deg,transparent,#ffddb0,transparent);
+}
+
+h1{
+font-family:'Playfair Display',serif;
+font-weight:600;
+font-size:32px;
+margin-bottom:16px;
+letter-spacing:1px;
+}
+
+p{
+font-size:16px;
+line-height:1.8;
+opacity:.92;
+}
+
+.note{
+margin-top:24px;
+font-size:14px;
+opacity:.75;
+}
+
+.signature{
+margin-top:40px;
+font-family:'Playfair Display',serif;
+font-size:17px;
+letter-spacing:1px;
+opacity:.85;
+}
+
+.fade{
+animation:fadeUp 1.4s ease forwards;
+opacity:0;
+}
+
+.delay1{animation-delay:.3s}
+.delay2{animation-delay:.6s}
+.delay3{animation-delay:.9s}
+.delay4{animation-delay:1.2s}
+
+@keyframes fadeUp{
+from{transform:translateY(18px);opacity:0}
+to{transform:translateY(0);opacity:1}
+}
+
+@keyframes fadeIn{
+from{opacity:0}
+to{opacity:1}
+}
+
+/* Mobile tối ưu */
+@media(max-width:600px){
+h1{font-size:26px}
+p{font-size:15px}
+.signature{font-size:15px}
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="star"></canvas>
+
+<div class="wrap">
+  <div class="line fade delay1"></div>
+
+  <h1 class="fade delay2">Chúng mình đã ghi nhận</h1>
+
+  <p class="fade delay3">
+    Cảm ơn bạn đã dành thời gian phản hồi.<br>
+    Dù không thể tham dự, sự quan tâm của bạn<br>
+    vẫn là một niềm trân trọng rất lớn.
+  </p>
+
+  <p class="note fade delay3">
+    Mong rằng trong những dịp sắp tới,<br>
+    chúng mình sẽ có cơ hội gặp lại nhau.
+  </p>
+
+  <div class="signature fade delay4">
+    Trân trọng 💛
+  </div>
+</div>
+
+<script>
+const c=document.getElementById("star");
+const ctx=c.getContext("2d");
+let w,h,stars=[];
+
+function resize(){
+w=c.width=window.innerWidth;
+h=c.height=window.innerHeight;
+}
+window.addEventListener("resize",resize);
+resize();
+
+for(let i=0;i<120;i++){
+stars.push({
+x:Math.random()*w,
+y:Math.random()*h,
+r:Math.random()*1.2+0.3,
+s:Math.random()*0.6+0.2
+});
+}
+
+function draw(){
+ctx.clearRect(0,0,w,h);
+ctx.fillStyle="#fff";
+stars.forEach(st=>{
+ctx.globalAlpha=Math.random()*0.5+0.3;
+ctx.beginPath();
+ctx.arc(st.x,st.y,st.r,0,Math.PI*2);
+ctx.fill();
+st.y+=st.s;
+if(st.y>h){st.y=0;st.x=Math.random()*w;}
+});
+requestAnimationFrame(draw);
+}
+draw();
+</script>
+
+</body>
+</html>
