@@ -11,8 +11,7 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Playfair Display',serif;}
 body{background:black;overflow:hidden;height:100vh;color:#d4af37}
 
-/* STAR BACKGROUND */
-canvas{position:fixed;inset:0;z-index:0}
+canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 
 /* INTRO */
 #intro{
@@ -22,7 +21,7 @@ canvas{position:fixed;inset:0;z-index:0}
   background:rgba(0,0,0,.7);
   backdrop-filter:blur(10px);
   z-index:5;
-  transition:2.4s ease;
+  transition:2s ease;
 }
 
 .line{
@@ -35,11 +34,7 @@ canvas{position:fixed;inset:0;z-index:0}
   text-align:center;
 }
 
-.line.show{
-  opacity:1;
-  transform:translateY(0);
-  filter:blur(0);
-}
+.line.show{opacity:1;transform:translateY(0);filter:blur(0);}
 
 /* SCENE */
 #scene{
@@ -49,25 +44,26 @@ canvas{position:fixed;inset:0;z-index:0}
   align-items:center;
   justify-content:center;
   opacity:0;
-  transition:2s ease;
-  z-index:3;
+  pointer-events:none;
+  transition:1.5s ease;
+  z-index:20;
 }
 
-#scene.show{opacity:1}
+#scene.show{
+  opacity:1;
+  pointer-events:auto;
+}
 
 /* ENVELOPE */
 #envelope{
-  width:290px;
+  width:280px;
   cursor:pointer;
   animation:float 4s ease-in-out infinite;
   filter:drop-shadow(0 0 35px rgba(255,215,0,.6));
-  transition:.5s;
+  transition:.4s;
 }
 
-#envelope:hover{
-  transform:scale(1.12);
-  filter:drop-shadow(0 0 80px rgba(255,215,0,1));
-}
+#envelope:active{transform:scale(.95)}
 
 @keyframes float{
   0%,100%{transform:translateY(0)}
@@ -75,7 +71,7 @@ canvas{position:fixed;inset:0;z-index:0}
 }
 
 .hint{
-  margin-top:22px;
+  margin-top:20px;
   font-size:14px;
   letter-spacing:2px;
   animation:blink 2s infinite;
@@ -83,39 +79,31 @@ canvas{position:fixed;inset:0;z-index:0}
 
 @keyframes blink{
   0%,100%{opacity:1}
-  50%{opacity:.35}
+  50%{opacity:.3}
 }
 
-/* TRANSITION FX */
-#fx{
+/* FX */
+#fx,#warp{
   position:fixed;
   inset:0;
-  background:radial-gradient(circle,#fff 0%,#000 70%);
   opacity:0;
   pointer-events:none;
-  z-index:20;
-  transition:1.6s ease;
 }
 
-#fx.active{
-  opacity:1;
+#fx{
+  background:radial-gradient(circle,#fff 0%,#000 70%);
+  transition:1.2s ease;
+  z-index:50;
 }
 
-/* WARP */
 #warp{
-  position:fixed;
-  inset:0;
   background:radial-gradient(circle at center,rgba(255,215,150,.7),transparent 65%);
-  opacity:0;
-  filter:blur(10px);
-  transition:1.5s ease;
-  z-index:21;
+  filter:blur(12px);
+  transition:1.2s ease;
+  z-index:51;
 }
 
-#warp.active{
-  opacity:1;
-  transform:scale(1.4);
-}
+#fx.active,#warp.active{opacity:1}
 </style>
 </head>
 
@@ -138,7 +126,7 @@ canvas{position:fixed;inset:0;z-index:0}
 </div>
 
 <script>
-/* STAR BG */
+/* STAR */
 const canvas=document.getElementById("stars");
 const ctx=canvas.getContext("2d");
 
@@ -173,34 +161,32 @@ function animate(){
 animate();
 
 /* INTRO */
-const l1=l2=l3=null;
 const intro=document.getElementById("intro");
 const scene=document.getElementById("scene");
 const fx=document.getElementById("fx");
 const warp=document.getElementById("warp");
+const envelope=document.getElementById("envelope");
 
-setTimeout(()=>l1?.classList.add("show"),900);
-setTimeout(()=>document.getElementById("l1").classList.add("show"),900);
-setTimeout(()=>document.getElementById("l2").classList.add("show"),2600);
-setTimeout(()=>document.getElementById("l3").classList.add("show"),4400);
+setTimeout(()=>l1.classList.add("show"),800);
+setTimeout(()=>l2.classList.add("show"),2300);
+setTimeout(()=>l3.classList.add("show"),3900);
 
 setTimeout(()=>{
   intro.style.opacity=0;
   setTimeout(()=>{
     intro.style.display="none";
     scene.classList.add("show");
-  },2200);
-},7600);
+  },1800);
+},6500);
 
-/* CLICK TRANSITION MAX LEVEL */
-document.getElementById("envelope").onclick=()=>{
+/* CLICK */
+envelope.addEventListener("click",()=>{
   fx.classList.add("active");
   warp.classList.add("active");
-
   setTimeout(()=>{
     location.href="countdown.html";
-  },1400);
-}
+  },1200);
+});
 </script>
 
 </body>
