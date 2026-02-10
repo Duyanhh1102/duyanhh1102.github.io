@@ -124,7 +124,7 @@ font-size:15px
 <form id="form">
   <input type="text" name="name" placeholder="Tên của bạn" required>
 
-  <textarea name="note" placeholder="Ghi chú (nếu có)..."></textarea>
+  <textarea name="message" placeholder="Ghi chú (nếu có)..."></textarea>
 
   <input type="hidden" name="status" value="THAM DỰ">
   <input type="hidden" name="time" id="time">
@@ -139,7 +139,7 @@ font-size:15px
 
 <script>
 (function(){
-  emailjs.init("oY8uUtdvgKbfQPvH1"); 
+  emailjs.init("yFzPlUndfFgJUo9Rn"); 
 })();
 
 const btn = document.getElementById('btn');
@@ -154,7 +154,7 @@ document.getElementById('form').addEventListener('submit', function(e){
   btn.classList.add('loading');
 
   emailjs.sendForm(
-    'service_9v1yoa8',
+    'service_g2jg94a',
     'template_lkkolei',
     this
   ).then(function(){
@@ -163,6 +163,7 @@ document.getElementById('form').addEventListener('submit', function(e){
   }, function(error){
     btn.classList.remove('loading');
     alert('Lỗi gửi mail: ' + JSON.stringify(error));
+    console.log(error);
   });
 });
 </script>
