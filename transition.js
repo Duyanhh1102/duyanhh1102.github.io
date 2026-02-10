@@ -1,60 +1,31 @@
+// Smooth page transition
 document.addEventListener("DOMContentLoaded", () => {
-  const pages = document.querySelectorAll(".page");
+  const style = document.createElement("style");
+  style.innerHTML = `
+    body{
+      opacity:0;
+      transition:opacity .6s ease;
+    }
+    body.loaded{
+      opacity:1;
+    }
+    body.fade-out{
+      opacity:0;
+    }
+  `;
+  document.head.appendChild(style);
+  requestAnimationFrame(()=>document.body.classList.add("loaded"));
+});
 
-  function showPage(id) {
-    pages.forEach(p => {
-      p.classList.remove("active");
-      p.style.display = "none";
-    });
+document.addEventListener("click", e => {
+  const link = e.target.closest("a, [data-link]");
+  if(!link) return;
 
-    const page = document.getElementById(id);
-    if (!page) return;
+  e.preventDefault();
+  const url = link.href || link.dataset.link;
 
-    page.style.display = "flex";
-
-    requestAnimationFrame(() => {
-      page.classList.add("active");
-    });
-  }
-
-  function smoothSwitch(from, to, delay = 500) {
-    const f = document.getElementById(from);
-    if (f) f.classList.remove("active");
-
-    setTimeout(() => {
-      showPage(to);
-    }, delay);
-  }
-
-  /* ========== FLOW CHÍNH ========== */
-
-  // Intro → Envelope
-  const introBtn = document.getElementById("startBtn");
-  if (introBtn) {
-    introBtn.onclick = () => smoothSwitch("intro", "envelope", 450);
-  }
-
-  // Envelope → Countdown
-  const openBtn = document.getElementById("openBtn");
-  if (openBtn) {
-    openBtn.onclick = () => smoothSwitch("envelope", "countdown", 450);
-  }
-
-  // Countdown → Main
-  const COUNTDOWN_TIME = 5;
-  let time = COUNTDOWN_TIME;
-
-  const counter = document.getElementById("count");
-  if (counter) {
-    counter.innerText = time;
-
-    const timer = setInterval(() => {
-      time--;
-      counter.innerText = time;
-
-      if (time <= 0) {
-        clearInterval(timer);
-        smoothSwitch("countdown", "main", 450);
-      }
-    }, 1000);
-  }
+  document.body.classList.add("fade-out");
+  setTimeout(()=>{
+    window.location.href = url;
+  },450);
+});
