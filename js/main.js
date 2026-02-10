@@ -2,16 +2,26 @@ const intro = document.getElementById("intro");
 const envelope = document.getElementById("envelope");
 const openBtn = document.getElementById("openBtn");
 
-setTimeout(() => {
-  intro.classList.add("hidden");
-  setTimeout(() => {
-    envelope.classList.remove("hidden");
-  }, 2000);
-}, 10000);
+function showScene(scene) {
+  document.querySelectorAll(".scene").forEach(s => {
+    s.classList.add("hidden");
+    s.classList.remove("active");
+  });
 
+  scene.classList.remove("hidden");
+  scene.classList.add("active");
+}
+
+// intro → envelope
+setTimeout(() => {
+  showScene(envelope);
+}, 8000);
+
+// click mở thư
 openBtn.addEventListener("click", () => {
-  envelope.style.opacity = "0";
+  envelope.classList.add("hidden");
+
   setTimeout(() => {
     alert("Scene tiếp theo: Lời mời chính sẽ load");
-  }, 1500);
+  }, 800);
 });
