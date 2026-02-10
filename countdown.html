@@ -14,6 +14,7 @@ body{
   color:#ffd700;
   overflow:hidden;
   height:100vh;
+  transition:1s;
 }
 
 canvas{
@@ -72,6 +73,14 @@ canvas{
   letter-spacing:2px;
   opacity:.85;
 }
+
+/* MOBILE */
+@media(max-width:600px){
+  .title{font-size:22px}
+  .timer{gap:12px}
+  .box{width:70px;height:90px}
+  .num{font-size:30px}
+}
 </style>
 </head>
 
@@ -126,13 +135,12 @@ function animate(){
 }
 animate();
 
-/* COUNTDOWN CHUẨN */
+/* COUNTDOWN */
 const target = new Date("2026-03-01T00:00:00+07:00").getTime();
 
 function tick(){
   const now = Date.now();
   let diff = target - now;
-
   if(diff < 0) diff = 0;
 
   const d = Math.floor(diff / 86400000);
@@ -149,10 +157,26 @@ function tick(){
 }
 tick();
 
-/* AUTO CHUYỂN TRANG SAU 3.5 GIÂY */
-setTimeout(() => {
-  window.location.href = "invite.html";
-}, 3500);
+/* FLASH + BLUR CHUYỂN CẢNH */
+const flash = document.createElement("div");
+flash.style.position="fixed";
+flash.style.inset=0;
+flash.style.background="#fff";
+flash.style.opacity=0;
+flash.style.pointerEvents="none";
+flash.style.transition="1s";
+flash.style.zIndex=20;
+document.body.appendChild(flash);
+
+setTimeout(()=>{
+  document.body.style.filter="blur(8px) brightness(1.4)";
+  flash.style.opacity=.35;
+
+  setTimeout(()=>{
+    window.location.href="invite.html";
+  },900);
+
+},3500);
 </script>
 
 </body>
