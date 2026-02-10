@@ -18,6 +18,15 @@ font-family:'Montserrat',sans-serif;color:#f5e8c8;
 overflow:hidden
 }
 
+.overlay{
+position:fixed;
+inset:0;
+background:radial-gradient(circle at center,rgba(255,215,120,.15),transparent 70%);
+pointer-events:none;
+opacity:0;
+transition:1.2s;
+}
+
 .wrap{
 width:90%;
 max-width:520px;
@@ -29,10 +38,17 @@ text-align:center;
 box-shadow:0 0 50px rgba(255,215,120,.35);
 animation:slideFade 1.2s ease forwards;
 opacity:0;
-transform:translateY(20px)
+transform:translateY(20px);
+transition:1.2s ease;
 }
 
 @keyframes slideFade{to{opacity:1;transform:translateY(0)}}
+
+.wrap.fade-out{
+opacity:0;
+transform:scale(.92);
+filter:blur(8px);
+}
 
 h1{
 font-family:'Playfair Display',serif;
@@ -110,25 +126,30 @@ display:none;
 margin-top:22px;
 color:#ffe9a8;
 letter-spacing:1px;
-font-size:15px
+font-size:15px;
+animation:successPop .6s ease forwards;
+}
+
+@keyframes successPop{
+from{opacity:0;transform:scale(.9)}
+to{opacity:1;transform:scale(1)}
 }
 </style>
 </head>
 
 <body>
 
-<div class="wrap">
+<div class="overlay" id="overlay"></div>
+
+<div class="wrap" id="wrap">
 <h1>THAM DỰ</h1>
 <p>🎉 Thật tuyệt vời khi bạn sẽ tham dự cùng <b>Duy Anh</b><br>Hẹn gặp bạn trong buổi tiệc sắp tới ✨</p>
 
 <form id="form">
   <input type="text" name="name" placeholder="Tên của bạn" required>
-
   <textarea name="message" placeholder="Lời nhắn gửi đến Duy Anh (không bắt buộc)..."></textarea>
-
   <input type="hidden" name="status" value="THAM DỰ">
   <input type="hidden" name="time" id="time">
-
   <button id="btn" type="submit">XÁC NHẬN</button>
 </form>
 
@@ -144,6 +165,8 @@ font-size:15px
 
 const btn = document.getElementById('btn');
 const success = document.getElementById('success');
+const wrap = document.getElementById('wrap');
+const overlay = document.getElementById('overlay');
 
 document.getElementById('form').addEventListener('submit', function(e){
   e.preventDefault();
@@ -160,6 +183,16 @@ document.getElementById('form').addEventListener('submit', function(e){
   ).then(function(){
     btn.classList.remove('loading');
     success.style.display = 'block';
+
+    setTimeout(()=>{
+      wrap.classList.add('fade-out');
+      overlay.style.opacity = 1;
+    },900);
+
+    setTimeout(()=>{
+      window.location.href = "end-attend.html";
+    },2200);
+
   }, function(error){
     btn.classList.remove('loading');
     alert('Lỗi gửi mail: ' + JSON.stringify(error));
