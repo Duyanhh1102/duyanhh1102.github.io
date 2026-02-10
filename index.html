@@ -12,50 +12,42 @@
 body{background:black;overflow:hidden;height:100vh;color:#d4af37}
 
 /* STAR BACKGROUND */
-canvas{
-  position:fixed;
-  inset:0;
-  z-index:0;
-}
+canvas{position:fixed;inset:0;z-index:0}
 
 /* INTRO */
 #intro{
-  position:fixed;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
+  position:fixed;inset:0;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  background:rgba(0,0,0,.7);
+  backdrop-filter:blur(10px);
   z-index:5;
-  background:rgba(0,0,0,0.6);
-  backdrop-filter:blur(6px);
-  transition:2s;
+  transition:2.4s ease;
 }
 
 .line{
   font-size:30px;
   opacity:0;
-  transform:translateY(20px);
-  filter:blur(10px);
-  transition:1.5s ease;
-  margin:12px 0;
+  transform:translateY(25px);
+  filter:blur(15px);
+  transition:1.7s ease;
+  margin:14px 0;
   text-align:center;
 }
 
 .line.show{
   opacity:1;
-  filter:blur(0);
   transform:translateY(0);
+  filter:blur(0);
 }
 
 /* SCENE */
 #scene{
-  position:fixed;
-  inset:0;
+  position:fixed;inset:0;
   display:flex;
+  flex-direction:column;
   align-items:center;
   justify-content:center;
-  flex-direction:column;
   opacity:0;
   transition:2s ease;
   z-index:3;
@@ -65,16 +57,16 @@ canvas{
 
 /* ENVELOPE */
 #envelope{
-  width:280px;
+  width:290px;
   cursor:pointer;
-  filter:drop-shadow(0 0 30px rgba(255,215,0,0.4));
   animation:float 4s ease-in-out infinite;
-  transition:.4s;
+  filter:drop-shadow(0 0 35px rgba(255,215,0,.6));
+  transition:.5s;
 }
 
 #envelope:hover{
-  transform:scale(1.08);
-  filter:drop-shadow(0 0 60px rgba(255,215,0,0.8));
+  transform:scale(1.12);
+  filter:drop-shadow(0 0 80px rgba(255,215,0,1));
 }
 
 @keyframes float{
@@ -94,15 +86,35 @@ canvas{
   50%{opacity:.35}
 }
 
-/* FADE OUT */
-#fade{
+/* TRANSITION FX */
+#fx{
   position:fixed;
   inset:0;
-  background:black;
+  background:radial-gradient(circle,#fff 0%,#000 70%);
   opacity:0;
   pointer-events:none;
-  transition:1.4s;
   z-index:20;
+  transition:1.6s ease;
+}
+
+#fx.active{
+  opacity:1;
+}
+
+/* WARP */
+#warp{
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle at center,rgba(255,215,150,.7),transparent 65%);
+  opacity:0;
+  filter:blur(10px);
+  transition:1.5s ease;
+  z-index:21;
+}
+
+#warp.active{
+  opacity:1;
+  transform:scale(1.4);
 }
 </style>
 </head>
@@ -111,7 +123,8 @@ canvas{
 
 <canvas id="stars"></canvas>
 
-<div id="fade"></div>
+<div id="fx"></div>
+<div id="warp"></div>
 
 <div id="intro">
   <div class="line" id="l1">Chúng ta đã cùng nhau đi qua một chặng đường…</div>
@@ -125,24 +138,23 @@ canvas{
 </div>
 
 <script>
-/* STAR BACKGROUND */
-const canvas = document.getElementById("stars");
-const ctx = canvas.getContext("2d");
+/* STAR BG */
+const canvas=document.getElementById("stars");
+const ctx=canvas.getContext("2d");
 
 function resize(){
-  canvas.width = innerWidth;
-  canvas.height = innerHeight;
+  canvas.width=innerWidth;
+  canvas.height=innerHeight;
 }
-resize();
-addEventListener("resize",resize);
+resize(); addEventListener("resize",resize);
 
 let stars=[];
-for(let i=0;i<160;i++){
+for(let i=0;i<170;i++){
   stars.push({
     x:Math.random()*canvas.width,
     y:Math.random()*canvas.height,
-    r:Math.random()*1.5+0.3,
-    s:Math.random()*0.4+0.1
+    r:Math.random()*1.5+.3,
+    s:Math.random()*.5+.15
   });
 }
 
@@ -151,39 +163,43 @@ function animate(){
   for(let s of stars){
     ctx.beginPath();
     ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-    ctx.fillStyle="rgba(255,215,100,.9)";
+    ctx.fillStyle="rgba(255,215,120,.9)";
     ctx.fill();
     s.y-=s.s;
-    if(s.y<0) s.y=canvas.height;
+    if(s.y<0)s.y=canvas.height;
   }
   requestAnimationFrame(animate);
 }
 animate();
 
-/* INTRO TEXT */
-const l1=document.getElementById("l1");
-const l2=document.getElementById("l2");
-const l3=document.getElementById("l3");
+/* INTRO */
+const l1=l2=l3=null;
 const intro=document.getElementById("intro");
 const scene=document.getElementById("scene");
-const fade=document.getElementById("fade");
+const fx=document.getElementById("fx");
+const warp=document.getElementById("warp");
 
-setTimeout(()=>l1.classList.add("show"),800);
-setTimeout(()=>l2.classList.add("show"),2600);
-setTimeout(()=>l3.classList.add("show"),4400);
+setTimeout(()=>l1?.classList.add("show"),900);
+setTimeout(()=>document.getElementById("l1").classList.add("show"),900);
+setTimeout(()=>document.getElementById("l2").classList.add("show"),2600);
+setTimeout(()=>document.getElementById("l3").classList.add("show"),4400);
 
 setTimeout(()=>{
   intro.style.opacity=0;
   setTimeout(()=>{
     intro.style.display="none";
     scene.classList.add("show");
-  },1800);
-},7200);
+  },2200);
+},7600);
 
-/* CLICK */
+/* CLICK TRANSITION MAX LEVEL */
 document.getElementById("envelope").onclick=()=>{
-  fade.style.opacity=1;
-  setTimeout(()=>location.href="countdown.html",1100);
+  fx.classList.add("active");
+  warp.classList.add("active");
+
+  setTimeout(()=>{
+    location.href="countdown.html";
+  },1400);
 }
 </script>
 
