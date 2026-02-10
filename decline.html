@@ -74,8 +74,12 @@
   <h1>KHÔNG THAM DỰ</h1>
 
   <form id="form">
-    <input type="text" name="name" id="name" placeholder="Họ tên" required>
-    <textarea name="message" id="decline-note" placeholder="Lý do (không bắt buộc)"></textarea>
+    <input type="text" name="name" placeholder="Họ tên" required>
+    <textarea name="message" placeholder="Lý do (không bắt buộc)"></textarea>
+
+    <input type="hidden" name="status" value="KHÔNG THAM DỰ">
+    <input type="hidden" name="time" id="time">
+
     <button type="submit">XÁC NHẬN</button>
   </form>
 
@@ -88,33 +92,26 @@
 
 <script>
 (function(){
-  emailjs.init("oY8uUtdvgKbfQPvH1");
+  emailjs.init("yFzPlUndfFgJUo9Rn");   // PUBLIC KEY MỚI
 })();
 
 document.getElementById("form").addEventListener("submit", function(e){
   e.preventDefault();
 
-  let name = document.getElementById("name").value.trim();
-  let note = document.getElementById("decline-note").value.trim();
+  document.getElementById("time").value =
+    new Date().toLocaleString("vi-VN");
 
-  if(!note) note = "Không có ghi chú";
-
-  const data = {
-    name: name,
-    message: note,
-    status: "KHÔNG THAM DỰ",
-    time: new Date().toLocaleString("vi-VN")
-  };
-
-  emailjs.send("service_9v1yoa8", "template_lkkolei", data)
-    .then(() => {
+  emailjs.sendForm(
+    "service_g2jg94a",   // SERVICE ID MỚI
+    "template_lkkolei", // TEMPLATE ID
+    this
+  ).then(() => {
       alert("Đã gửi phản hồi!");
       window.location.href = "thanks.html";
-    })
-    .catch((err) => {
+  }, (error) => {
       alert("Lỗi gửi mail!");
-      console.log(err);
-    });
+      console.log(error);
+  });
 });
 </script>
 
