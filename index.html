@@ -16,35 +16,41 @@ canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 /* INTRO */
 #intro{
   position:fixed;inset:0;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
   background:rgba(0,0,0,.7);
-  backdrop-filter:blur(6px);
+  backdrop-filter:blur(8px);
   z-index:5;
-  transition:1s ease;
+  transition:1.5s ease;
 }
 
 .line{
-  font-size:26px;
+  font-size:28px;
   opacity:0;
-  transform:translateY(18px);
-  transition:1s ease;
+  transform:translateY(20px);
+  transition:1.5s ease;
   margin:14px 0;
   text-align:center;
 }
 
-.line.show{opacity:1;transform:translateY(0);}
+.line.show{
+  opacity:1;
+  transform:translateY(0);
+}
 
 /* SCENE */
 #scene{
-  position:fixed;inset:0;
+  position:fixed;
+  inset:0;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   opacity:0;
   pointer-events:none;
-  transition:1s ease;
+  transition:1.5s ease;
   z-index:10;
 }
 
@@ -57,25 +63,23 @@ canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 #envelope{
   width:260px;
   cursor:pointer;
-  animation:float 3s ease-in-out infinite;
-  filter:drop-shadow(0 0 20px rgba(255,215,0,.45));
+  animation:float 4s ease-in-out infinite;
+  filter:drop-shadow(0 0 30px rgba(255,215,0,.5));
+  transition:.3s;
 }
+
+#envelope:active{transform:scale(.95)}
 
 @keyframes float{
   0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-12px)}
+  50%{transform:translateY(-14px)}
 }
 
 .hint{
-  margin-top:16px;
+  margin-top:18px;
   font-size:13px;
   letter-spacing:2px;
-  animation:blink 1.5s infinite;
-}
-
-@keyframes blink{
-  0%,100%{opacity:1}
-  50%{opacity:.4}
+  opacity:.8;
 }
 </style>
 </head>
@@ -96,6 +100,7 @@ canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 </div>
 
 <script>
+/* STAR */
 const canvas=document.getElementById("stars");
 const ctx=canvas.getContext("2d");
 
@@ -103,14 +108,15 @@ function resize(){
   canvas.width=innerWidth;
   canvas.height=innerHeight;
 }
-resize(); addEventListener("resize",resize);
+resize();
+addEventListener("resize",resize);
 
 let stars=[];
-for(let i=0;i<120;i++){
+for(let i=0;i<140;i++){
   stars.push({
     x:Math.random()*canvas.width,
     y:Math.random()*canvas.height,
-    r:Math.random()*1.3+.3,
+    r:Math.random()*1.5+.3,
     s:Math.random()*.4+.15
   });
 }
@@ -129,25 +135,23 @@ function animate(){
 }
 animate();
 
-const intro=document.getElementById("intro");
-const scene=document.getElementById("scene");
-const envelope=document.getElementById("envelope");
-
-setTimeout(()=>l1.classList.add("show"),400);
-setTimeout(()=>l2.classList.add("show"),1600);
-setTimeout(()=>l3.classList.add("show"),2800);
+/* INTRO */
+setTimeout(()=>l1.classList.add("show"),600);
+setTimeout(()=>l2.classList.add("show"),1900);
+setTimeout(()=>l3.classList.add("show"),3200);
 
 setTimeout(()=>{
-  intro.style.opacity=0;
+  document.getElementById("intro").style.opacity=0;
   setTimeout(()=>{
-    intro.remove();
-    scene.classList.add("show");
-  },800);
-},4500);
+    document.getElementById("intro").style.display="none";
+    document.getElementById("scene").classList.add("show");
+  },1200);
+},5200);
 
-envelope.onclick=()=>{
+/* CLICK FIX */
+document.getElementById("envelope").addEventListener("click",()=>{
   location.href="countdown.html";
-}
+});
 </script>
 
 </body>
