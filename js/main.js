@@ -6,7 +6,7 @@ setTimeout(() => {
   intro.classList.add("hidden");
 
   setTimeout(() => {
-    intro.style.display = "none";
+    intro.style.display = "none";   // 🔥 xoá hẳn layer intro
     envelope.classList.remove("hidden");
     envelope.classList.add("active");
   }, 800);
