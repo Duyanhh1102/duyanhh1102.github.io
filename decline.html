@@ -75,8 +75,8 @@
   <h1>KHÔNG THAM DỰ</h1>
 
   <form id="form">
-    <input type="text" name="name" placeholder="Họ tên" required>
-    <textarea name="message" placeholder="Lý do (không bắt buộc)"></textarea>
+    <input type="text" name="name" id="name" placeholder="Họ tên" required>
+    <textarea name="message" id="decline-note" placeholder="Lý do (không bắt buộc)"></textarea>
     <button type="submit">XÁC NHẬN</button>
   </form>
 
@@ -88,28 +88,34 @@
 </div>
 
 <script>
-  (function(){
-    emailjs.init("oY8uUtdvgKbfQPvH1");
-  })();
+(function(){
+  emailjs.init("oY8uUtdvgKbfQPvH1");
+})();
 
-  document.getElementById("form").addEventListener("submit", function(e){
-    e.preventDefault();
+document.getElementById("form").addEventListener("submit", function(e){
+  e.preventDefault();
 
-    const data = {
-      name: this.name.value,
-      message: this.message.value || "Không có",
-      status: "KHÔNG THAM DỰ",
-      time: new Date().toLocaleString("vi-VN")
-    };
+  let name = document.getElementById("name").value.trim();
+  let note = document.getElementById("decline-note").value.trim();
 
-    emailjs.send("service_9v1yoa8","template_lkkolei",data)
-      .then(() => {
-        alert("Đã gửi phản hồi!");
-        window.location.href = "thanks.html";
-      }, () => {
-        alert("Lỗi gửi mail!");
-      });
-  });
+  if(!note) note = "Không có ghi chú";
+
+  const data = {
+    name: name,
+    message: note,
+    status: "KHÔNG THAM DỰ",
+    time: new Date().toLocaleString("vi-VN")
+  };
+
+  emailjs.send("service_9v1yoa8","template_lkkolei", data)
+    .then(() => {
+      alert("Đã gửi phản hồi!");
+      window.location.href = "thanks.html";
+    })
+    .catch(() => {
+      alert("Lỗi gửi mail!");
+    });
+});
 </script>
 
 </body>
