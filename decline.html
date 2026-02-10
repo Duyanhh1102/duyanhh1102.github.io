@@ -74,15 +74,15 @@
   <h1>KHÔNG THAM DỰ</h1>
 
   <form id="form">
-    <input type="text" id="name" placeholder="Họ tên" required>
-    <textarea id="decline-note" placeholder="Lý do (không bắt buộc)"></textarea>
+    <input type="text" name="name" id="name" placeholder="Họ tên" required>
+    <textarea name="message" id="decline-note" placeholder="Lý do (không bắt buộc)"></textarea>
     <button type="submit">XÁC NHẬN</button>
   </form>
 
   <div class="info">
     Duy Anh<br>
     038993212<br>
-    pdan070728@gmail.com
+    pdanh070728@gmail.com
   </div>
 </div>
 
@@ -101,19 +101,19 @@ document.getElementById("form").addEventListener("submit", function(e){
 
   const data = {
     name: name,
-    note: note,
+    message: note,
     status: "KHÔNG THAM DỰ",
     time: new Date().toLocaleString("vi-VN")
   };
 
-  emailjs.send("service_9v1yoa8","template_lkkolei", data)
+  emailjs.send("service_9v1yoa8", "template_lkkolei", data)
     .then(() => {
       alert("Đã gửi phản hồi!");
       window.location.href = "thanks.html";
     })
-    .catch((error) => {
-      console.log("EmailJS error:", error);
+    .catch((err) => {
       alert("Lỗi gửi mail!");
+      console.log(err);
     });
 });
 </script>
