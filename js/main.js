@@ -6,7 +6,11 @@ setTimeout(() => {
   intro.classList.add("hidden");
 
   setTimeout(() => {
-    intro.style.display = "none";   // 🔥 xoá hẳn layer intro
+    // DIỆT HẲN LAYER INTRO -> KHÔNG CÒN CHẶN CLICK
+    intro.style.display = "none";
+    intro.style.pointerEvents = "none";
+    intro.style.zIndex = "-1";
+
     envelope.classList.remove("hidden");
     envelope.classList.add("active");
   }, 800);
@@ -18,6 +22,6 @@ openBtn.addEventListener("click", () => {
 
   setTimeout(() => {
     // chuyển scene tiếp theo tại đây
-    alert("Scene tiếp theo: Lời mời chính sẽ load");
+    window.location.href = "countdown.html";
   }, 900);
 });
