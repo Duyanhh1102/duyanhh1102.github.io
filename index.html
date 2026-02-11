@@ -13,6 +13,29 @@ body{background:black;overflow:hidden;height:100vh;color:#d4af37}
 
 canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 
+/* MUSIC BUTTON */
+#music-btn{
+  position:fixed;
+  bottom:16px;
+  right:16px;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  border:1px solid rgba(255,215,120,.7);
+  background:rgba(0,0,0,.45);
+  color:#ffd700;
+  font-size:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  z-index:200;
+  backdrop-filter:blur(6px);
+  transition:.3s;
+}
+#music-btn:hover{transform:scale(1.12)}
+#music-btn.off{opacity:.45}
+
 /* INTRO */
 #intro{
   position:fixed;inset:0;
@@ -106,6 +129,10 @@ body.fade-out{
 <canvas id="stars"></canvas>
 <div id="flash"></div>
 
+<!-- MUSIC -->
+<audio id="bgm" src="bg.mp3" loop></audio>
+<div id="music-btn">🔊</div>
+
 <div id="intro">
   <div class="line" id="l1">Chúng ta đã cùng nhau đi qua một chặng đường…</div>
   <div class="line" id="l2">Và hôm nay, là lúc lưu giữ những ký ức đẹp nhất.</div>
@@ -118,6 +145,41 @@ body.fade-out{
 </div>
 
 <script>
+/* MUSIC */
+const bgm = document.getElementById("bgm");
+const musicBtn = document.getElementById("music-btn");
+let playing = false;
+
+function fadeIn(audio, duration=3000){
+  audio.volume = 0;
+  audio.play();
+  playing = true;
+  let step = 0.02;
+  let interval = duration * step;
+  let fade = setInterval(()=>{
+    if(audio.volume < 1){
+      audio.volume += step;
+    } else clearInterval(fade);
+  }, interval);
+}
+
+document.body.addEventListener("click",()=>{
+  if(!playing) fadeIn(bgm,3000);
+},{once:true});
+
+musicBtn.onclick = ()=>{
+  if(playing){
+    bgm.pause();
+    musicBtn.classList.add("off");
+    musicBtn.textContent="🔇";
+    playing=false;
+  }else{
+    fadeIn(bgm,1500);
+    musicBtn.classList.remove("off");
+    musicBtn.textContent="🔊";
+  }
+};
+
 /* STAR */
 const canvas=document.getElementById("stars");
 const ctx=canvas.getContext("2d");
