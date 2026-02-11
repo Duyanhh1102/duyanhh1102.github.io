@@ -35,15 +35,11 @@ canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
   text-align:center;
 }
 
-.line.show{
-  opacity:1;
-  transform:translateY(0);
-}
+.line.show{opacity:1;transform:translateY(0)}
 
 /* SCENE */
 #scene{
-  position:fixed;
-  inset:0;
+  position:fixed;inset:0;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -80,6 +76,15 @@ canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
   font-size:13px;
   letter-spacing:2px;
   opacity:.8;
+}
+
+/* FADE OUT */
+body.fade-out{
+  animation:fadeOut 1.2s ease forwards;
+}
+
+@keyframes fadeOut{
+  to{opacity:0}
 }
 </style>
 </head>
@@ -126,7 +131,7 @@ function animate(){
   for(let s of stars){
     ctx.beginPath();
     ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-    ctx.fillStyle="rgba(255,215,120,.😎";
+    ctx.fillStyle="rgba(255,215,120,.9)";
     ctx.fill();
     s.y-=s.s;
     if(s.y<0)s.y=canvas.height;
@@ -141,16 +146,19 @@ setTimeout(()=>l2.classList.add("show"),1900);
 setTimeout(()=>l3.classList.add("show"),3200);
 
 setTimeout(()=>{
-  document.getElementById("intro").style.opacity=0;
+  intro.style.opacity=0;
   setTimeout(()=>{
-    document.getElementById("intro").style.display="none";
-    document.getElementById("scene").classList.add("show");
+    intro.style.display="none";
+    scene.classList.add("show");
   },1200);
 },5200);
 
-/* CLICK FIX */
-document.getElementById("envelope").addEventListener("click",()=>{
-  location.href="countdown.html";
+/* CLICK TRANSITION */
+envelope.addEventListener("click",()=>{
+  document.body.classList.add("fade-out");
+  setTimeout(()=>{
+    location.href="countdown.html";
+  },1200);
 });
 </script>
 
