@@ -14,22 +14,18 @@ body{
   color:#ffd700;
   overflow:hidden;
   height:100vh;
+  transition:1s;
 }
 
-canvas{
-  position:fixed;
-  inset:0;
-  z-index:0;
-  pointer-events:none;
-}
+canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 
 .main{
   position:fixed;
   inset:0;
   display:flex;
+  flex-direction:column;
   align-items:center;
   justify-content:center;
-  flex-direction:column;
   z-index:5;
 }
 
@@ -48,7 +44,8 @@ canvas{
 
 .timer{
   display:flex;
-  gap:18px;
+  align-items:center;
+  gap:10px;
 }
 
 .box{
@@ -61,25 +58,24 @@ canvas{
   align-items:center;
   justify-content:center;
   box-shadow:0 0 25px rgba(255,215,0,.5);
-  backdrop-filter: blur(6px);
+  backdrop-filter:blur(6px);
 }
 
-.num{
-  font-size:38px;
+.num{font-size:38px}
+.label{font-size:12px;letter-spacing:2px;opacity:.85}
+
+.colon{
+  font-size:42px;
+  margin-top:-12px;
 }
 
-.label{
-  font-size:12px;
-  letter-spacing:2px;
-  opacity:.85;
-}
+body.fade-out{opacity:0}
 
-/* MOBILE */
 @media(max-width:600px){
   .title{font-size:22px}
-  .timer{gap:12px}
   .box{width:70px;height:90px}
   .num{font-size:30px}
+  .colon{font-size:32px}
 }
 </style>
 </head>
@@ -92,32 +88,32 @@ canvas{
   <div class="title">KHOẢNH KHẮC SẮP MỞ RA</div>
 
   <div class="timer">
-    <div class="box"><div class="num" id="days">00</div><div class="label">NGÀY</div></div>
     <div class="box"><div class="num" id="hours">00</div><div class="label">GIỜ</div></div>
+    <div class="colon">:</div>
     <div class="box"><div class="num" id="minutes">00</div><div class="label">PHÚT</div></div>
+    <div class="colon">:</div>
     <div class="box"><div class="num" id="seconds">00</div><div class="label">GIÂY</div></div>
   </div>
 </div>
 
 <script>
-/* SAO NỀN */
-const canvas = document.getElementById("stars");
-const ctx = canvas.getContext("2d");
+/* SAO */
+const canvas=document.getElementById("stars");
+const ctx=canvas.getContext("2d");
 
 function resize(){
-  canvas.width = innerWidth;
-  canvas.height = innerHeight;
+  canvas.width=innerWidth;
+  canvas.height=innerHeight;
 }
-resize();
-addEventListener("resize",resize);
+resize(); addEventListener("resize",resize);
 
 let stars=[];
 for(let i=0;i<160;i++){
   stars.push({
     x:Math.random()*canvas.width,
     y:Math.random()*canvas.height,
-    r:Math.random()*1.5+0.4,
-    s:Math.random()*0.5+0.15
+    r:Math.random()*1.5+.4,
+    s:Math.random()*.5+.15
   });
 }
 
@@ -129,32 +125,36 @@ function animate(){
     ctx.fillStyle="rgba(255,215,120,.9)";
     ctx.fill();
     s.y-=s.s;
-    if(s.y<0) s.y=canvas.height;
+    if(s.y<0)s.y=canvas.height;
   }
   requestAnimationFrame(animate);
 }
 animate();
 
-/* COUNTDOWN CHUẨN GIỜ */
-const target = new Date("2026-03-01T17:32:35+07:00").getTime();
+/* COUNTDOWN */
+const target=new Date("2026-03-01T17:32:35+07:00").getTime();
 
 function tick(){
-  const now = Date.now();
-  let diff = target - now;
-  if(diff < 0) diff = 0;
+  let diff=target-Date.now();
+  if(diff<0) diff=0;
 
-  const d = Math.floor(diff / 86400000);
-  const h = Math.floor(diff % 86400000 / 3600000);
-  const m = Math.floor(diff % 3600000 / 60000);
-  const s = Math.floor(diff % 60000 / 1000);
+  const h=Math.floor(diff%86400000/3600000);
+  const m=Math.floor(diff%3600000/60000);
+  const s=Math.floor(diff%60000/1000);
 
-  days.textContent = String(d).padStart(2,'0');
-  hours.textContent = String(h).padStart(2,'0');
-  minutes.textContent = String(m).padStart(2,'0');
-  seconds.textContent = String(s).padStart(2,'0');
+  hours.textContent=String(h).padStart(2,'0');
+  minutes.textContent=String(m).padStart(2,'0');
+  seconds.textContent=String(s).padStart(2,'0');
 }
-setInterval(tick,1000);
-tick();
+setInterval(tick,1000); tick();
+
+/* AUTO CHUYỂN TRANG */
+setTimeout(()=>{
+  document.body.classList.add("fade-out");
+  setTimeout(()=>{
+    location.href="invite.html";
+  },1000);
+},3500);
 </script>
 
 </body>
