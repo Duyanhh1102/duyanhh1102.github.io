@@ -14,13 +14,13 @@ body{
   color:#ffd700;
   overflow:hidden;
   height:100vh;
-  transition:1s;
 }
 
 canvas{
   position:fixed;
   inset:0;
   z-index:0;
+  pointer-events:none;
 }
 
 .main{
@@ -60,7 +60,7 @@ canvas{
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  box-shadow:0 0 25px rgba(255,215,0,.6);
+  box-shadow:0 0 25px rgba(255,215,0,.5);
   backdrop-filter: blur(6px);
 }
 
@@ -100,7 +100,7 @@ canvas{
 </div>
 
 <script>
-/* BACKGROUND SAO */
+/* SAO NỀN */
 const canvas = document.getElementById("stars");
 const ctx = canvas.getContext("2d");
 
@@ -117,7 +117,7 @@ for(let i=0;i<160;i++){
     x:Math.random()*canvas.width,
     y:Math.random()*canvas.height,
     r:Math.random()*1.5+0.4,
-    s:Math.random()*0.6+0.2
+    s:Math.random()*0.5+0.15
   });
 }
 
@@ -135,8 +135,8 @@ function animate(){
 }
 animate();
 
-/* COUNTDOWN */
-const target = new Date("2026-03-01T00:00:00+07:00").getTime();
+/* COUNTDOWN CHUẨN GIỜ */
+const target = new Date("2026-03-01T17:32:35+07:00").getTime();
 
 function tick(){
   const now = Date.now();
@@ -152,31 +152,9 @@ function tick(){
   hours.textContent = String(h).padStart(2,'0');
   minutes.textContent = String(m).padStart(2,'0');
   seconds.textContent = String(s).padStart(2,'0');
-
-  requestAnimationFrame(tick);
 }
+setInterval(tick,1000);
 tick();
-
-/* FLASH + BLUR CHUYỂN CẢNH */
-const flash = document.createElement("div");
-flash.style.position="fixed";
-flash.style.inset=0;
-flash.style.background="#fff";
-flash.style.opacity=0;
-flash.style.pointerEvents="none";
-flash.style.transition="1s";
-flash.style.zIndex=20;
-document.body.appendChild(flash);
-
-setTimeout(()=>{
-  document.body.style.filter="blur(8px) brightness(1.4)";
-  flash.style.opacity=.35;
-
-  setTimeout(()=>{
-    window.location.href="invite.html";
-  },900);
-
-},3500);
 </script>
 
 </body>
