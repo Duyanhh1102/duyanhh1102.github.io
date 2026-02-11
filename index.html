@@ -78,7 +78,19 @@ canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
   opacity:.8;
 }
 
-/* FADE OUT */
+/* FLASH + FADE */
+#flash{
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle,rgba(255,215,140,.9),rgba(0,0,0,.9) 70%);
+  opacity:0;
+  pointer-events:none;
+  transition:.8s ease;
+  z-index:99;
+}
+
+#flash.active{opacity:1}
+
 body.fade-out{
   animation:fadeOut 1.2s ease forwards;
 }
@@ -92,6 +104,7 @@ body.fade-out{
 <body>
 
 <canvas id="stars"></canvas>
+<div id="flash"></div>
 
 <div id="intro">
   <div class="line" id="l1">Chúng ta đã cùng nhau đi qua một chặng đường…</div>
@@ -153,9 +166,16 @@ setTimeout(()=>{
   },1200);
 },5200);
 
-/* CLICK TRANSITION */
+/* CLICK EFFECT */
+const flash=document.getElementById("flash");
+const envelope=document.getElementById("envelope");
+
 envelope.addEventListener("click",()=>{
-  document.body.classList.add("fade-out");
+  flash.classList.add("active");
+  setTimeout(()=>{
+    document.body.classList.add("fade-out");
+  },200);
+
   setTimeout(()=>{
     location.href="countdown.html";
   },1200);
