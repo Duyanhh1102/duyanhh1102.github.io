@@ -16,30 +16,23 @@
 const app = document.getElementById("app");
 const bgm = document.getElementById("bgm");
 
-let loadedScripts = [];
-
 async function loadPage(page){
-  // XOÁ TOÀN BỘ SCRIPT CŨ
-  loadedScripts.forEach(s => s.remove());
-  loadedScripts = [];
-
   const res = await fetch("pages/" + page + "?v=" + Date.now());
   const html = await res.text();
 
   app.innerHTML = html;
 
-  const scripts = app.querySelectorAll("script");
-
-  for(const old of scripts){
+  // CHẠY SCRIPT TRONG FILE CON (KHÔNG NHÂN BẢN SCRIPT)
+  app.querySelectorAll("script").forEach(old => {
     const s = document.createElement("script");
     if(old.src){
       s.src = old.src + "?v=" + Date.now();
-    } else {
+    }else{
       s.textContent = old.textContent;
     }
     document.body.appendChild(s);
-    loadedScripts.push(s);
-  }
+    old.remove();
+  });
 
   window.scrollTo(0,0);
 }
