@@ -6,6 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+<script src="../js/main.js"></script>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Playfair Display',serif;}
@@ -18,29 +19,6 @@ body{
 }
 
 canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
-
-/* MUSIC BTN */
-.music-btn{
-  position:fixed;
-  top:16px;
-  right:16px;
-  z-index:99;
-  width:44px;
-  height:44px;
-  border-radius:50%;
-  border:1px solid rgba(255,215,120,.7);
-  background:rgba(0,0,0,.45);
-  backdrop-filter:blur(6px);
-  color:#ffd700;
-  font-size:18px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
-  transition:.3s;
-}
-.music-btn:hover{transform:scale(1.08)}
-.music-btn.off{opacity:.45}
 
 .main{
   position:fixed;
@@ -107,10 +85,6 @@ body.fade-out{opacity:0}
 
 <canvas id="stars"></canvas>
 
-<!-- MUSIC -->
-<audio id="bgm" src="bg.mp3" loop></audio>
-<div class="music-btn" id="musicBtn">🔊</div>
-
 <div class="main">
   <div class="title">KHOẢNH KHẮC SẮP MỞ RA</div>
 
@@ -126,33 +100,6 @@ body.fade-out{opacity:0}
 </div>
 
 <script>
-/* MUSIC */
-const bgm=document.getElementById("bgm");
-const musicBtn=document.getElementById("musicBtn");
-
-bgm.volume=0;
-bgm.play().catch(()=>{});
-
-let vol=0;
-const fade=setInterval(()=>{
-  if(vol<0.6){
-    vol+=0.02;
-    bgm.volume=vol;
-  }else clearInterval(fade);
-},100);
-
-musicBtn.onclick=()=>{
-  if(bgm.paused){
-    bgm.play();
-    musicBtn.classList.remove("off");
-    musicBtn.textContent="🔊";
-  }else{
-    bgm.pause();
-    musicBtn.classList.add("off");
-    musicBtn.textContent="🔈";
-  }
-};
-
 /* STAR */
 const canvas=document.getElementById("stars");
 const ctx=canvas.getContext("2d");
@@ -210,7 +157,7 @@ setInterval(tick,1000); tick();
 setTimeout(()=>{
   document.body.classList.add("fade-out");
   setTimeout(()=>{
-    location.href="invite.html";
+    go('invite');
   },1000);
 },3500);
 </script>
