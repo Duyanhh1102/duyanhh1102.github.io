@@ -1,109 +1,8 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-<meta charset="UTF-8">
-<title>Thư mời kỷ yếu 12A2</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
-
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Playfair Display',serif;}
-body{background:black;overflow:hidden;height:100vh;color:#d4af37}
-
-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
-
-#intro{
-  position:fixed;inset:0;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  background:rgba(0,0,0,.7);
-  backdrop-filter:blur(8px);
-  z-index:5;
-  transition:1.5s ease;
-}
-
-.line{
-  font-size:28px;
-  opacity:0;
-  transform:translateY(20px);
-  transition:1.5s ease;
-  margin:14px 0;
-  text-align:center;
-}
-
-.line.show{opacity:1;transform:translateY(0)}
-
-#scene{
-  position:fixed;inset:0;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  opacity:0;
-  pointer-events:none;
-  transition:1.5s ease;
-  z-index:10;
-}
-
-#scene.show{
-  opacity:1;
-  pointer-events:auto;
-}
-
-#envelope{
-  width:260px;
-  cursor:pointer;
-  animation:float 4s ease-in-out infinite;
-  filter:drop-shadow(0 0 30px rgba(255,215,0,.5));
-}
-
-@keyframes float{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-14px)}
-}
-
-.hint{
-  margin-top:18px;
-  font-size:13px;
-  letter-spacing:2px;
-  opacity:.8;
-}
-
-#flash{
-  position:fixed;
-  inset:0;
-  background:radial-gradient(circle,rgba(255,215,140,.9),rgba(0,0,0,.9) 70%);
-  opacity:0;
-  pointer-events:none;
-  transition:.8s ease;
-  z-index:99;
-}
-
-#flash.active{opacity:1}
-</style>
-</head>
-
-<body>
-
-<canvas id="stars"></canvas>
-<div id="flash"></div>
-
-<div id="intro">
-  <div class="line" id="l1">Chúng ta đã cùng nhau đi qua một chặng đường…</div>
-  <div class="line" id="l2">Và hôm nay, là lúc lưu giữ những ký ức đẹp nhất.</div>
-  <div class="line" id="l3">Một lời mời trang trọng dành riêng cho bạn.</div>
-</div>
-
-<div id="scene">
-  <img id="envelope" src="https://cdn-icons-png.flaticon.com/512/561/561127.png">
-  <div class="hint">NHẤN ĐỂ MỞ THƯ</div>
-</div>
-
 <script>
-const l1 = l1 = document.getElementById("l1");
+(function(){
+
+/* DOM */
+const l1 = document.getElementById("l1");
 const l2 = document.getElementById("l2");
 const l3 = document.getElementById("l3");
 const intro = document.getElementById("intro");
@@ -119,7 +18,8 @@ function resize(){
   canvas.width=innerWidth;
   canvas.height=innerHeight;
 }
-resize(); addEventListener("resize",resize);
+resize();
+addEventListener("resize",resize);
 
 let stars=[];
 for(let i=0;i<140;i++){
@@ -150,23 +50,25 @@ setTimeout(()=>l1.classList.add("show"),600);
 setTimeout(()=>l2.classList.add("show"),1900);
 setTimeout(()=>l3.classList.add("show"),3200);
 
+/* CHUYỂN SANG SCENE */
 setTimeout(()=>{
   intro.style.opacity=0;
+
   setTimeout(()=>{
     intro.style.display="none";
     scene.classList.add("show");
   },1200);
+
 },5200);
 
 /* CLICK */
-envelope.addEventListener("click",()=>{
+envelope.onclick = () => {
   flash.classList.add("active");
 
   setTimeout(()=>{
     go("countdown.html");
-  },900);
-});
-</script>
+  },1200);
+};
 
-</body>
-</html>
+})();
+</script>
