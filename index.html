@@ -24,6 +24,19 @@
         const res = await fetch("pages/" + page + "?v=" + Date.now());
         const html = await res.text();
         app.innerHTML = html;
+
+        // ÉP SCRIPT TRONG FILE CON CHẠY LẠI (FIX LỖI KHÔNG HIỆN THƯ + KHÔNG CHẠY JS)
+        app.querySelectorAll("script").forEach(oldScript => {
+          const newScript = document.createElement("script");
+          if (oldScript.src) {
+            newScript.src = oldScript.src;
+          } else {
+            newScript.textContent = oldScript.textContent;
+          }
+          document.body.appendChild(newScript);
+          oldScript.remove();
+        });
+
         window.scrollTo(0, 0);
       } catch (err) {
         app.innerHTML = "<h3 style='color:red;text-align:center'>Lỗi tải trang</h3>";
@@ -38,7 +51,7 @@
       loadPage(page);
     }
 
-    // Kích hoạt nhạc khi người dùng tương tác lần đầu (fix iOS)
+    // Fix iOS autoplay nhạc
     document.addEventListener("click", () => {
       if (bgm.paused) {
         bgm.play().catch(()=>{});
