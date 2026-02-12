@@ -11,15 +11,63 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Playfair Display',serif;}
 body{background:black;color:#ffd700;overflow:hidden;height:100vh;}
 canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
-.main{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:5;transition:1s;}
-.main.fade-out{opacity:0;transform:scale(.96);}
-.title{font-size:28px;letter-spacing:4px;margin-bottom:30px;text-align:center;animation:glow 2s ease-in-out infinite alternate;}
-@keyframes glow{from{text-shadow:0 0 10px #d4af37}to{text-shadow:0 0 28px #ffd700}}
-.timer{display:flex;align-items:center;gap:10px;}
-.box{width:90px;height:110px;border:2px solid #ffd700;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 25px rgba(255,215,0,.5);backdrop-filter:blur(6px);}
+
+.main{
+  position:fixed;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  z-index:5;
+  transition:1s;
+}
+
+.main.fade-out{
+  opacity:0;
+  transform:scale(.96);
+}
+
+.title{
+  font-size:28px;
+  letter-spacing:4px;
+  margin-bottom:30px;
+  text-align:center;
+  animation:glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow{
+  from{text-shadow:0 0 10px #d4af37}
+  to{text-shadow:0 0 28px #ffd700}
+}
+
+.timer{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.box{
+  width:90px;
+  height:110px;
+  border:2px solid #ffd700;
+  border-radius:16px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 0 25px rgba(255,215,0,.5);
+  backdrop-filter:blur(6px);
+}
+
 .num{font-size:38px}
 .label{font-size:12px;letter-spacing:2px;opacity:.85}
-.colon{font-size:42px;margin-top:-12px;}
+
+.colon{
+  font-size:42px;
+  margin-top:-12px;
+}
+
 @media(max-width:600px){
   .title{font-size:22px}
   .box{width:70px;height:90px}
@@ -48,16 +96,22 @@ canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 </div>
 
 <script>
-const canvas=document.getElementById("stars");
-const ctx=canvas.getContext("2d");
+/* ====== CHỐNG CHẠY LẠI SCRIPT ====== */
+if(window.__COUNTDOWN_RUNNING__) throw "";
+window.__COUNTDOWN_RUNNING__ = true;
+
+/* ===== STAR ===== */
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
 
 function resize(){
-  canvas.width=innerWidth;
-  canvas.height=innerHeight;
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
 }
-resize(); addEventListener("resize",resize);
+resize();
+addEventListener("resize", resize);
 
-let stars=[];
+let stars = [];
 for(let i=0;i<160;i++){
   stars.push({
     x:Math.random()*canvas.width,
@@ -74,32 +128,38 @@ function animate(){
     ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
     ctx.fillStyle="rgba(255,215,120,.9)";
     ctx.fill();
-    s.y-=s.s;
-    if(s.y<0)s.y=canvas.height;
+    s.y -= s.s;
+    if(s.y < 0) s.y = canvas.height;
   }
   requestAnimationFrame(animate);
 }
 animate();
 
-const target=new Date("2026-03-01T17:32:35+07:00").getTime();
+/* ===== COUNTDOWN ===== */
+const target = new Date("2026-03-01T17:32:35+07:00").getTime();
 
 function tick(){
-  let diff=target-Date.now();
-  if(diff<0) diff=0;
+  let diff = target - Date.now();
+  if(diff < 0) diff = 0;
 
-  days.textContent=String(Math.floor(diff/86400000)).padStart(2,'0');
-  hours.textContent=String(Math.floor(diff%86400000/3600000)).padStart(2,'0');
-  minutes.textContent=String(Math.floor(diff%3600000/60000)).padStart(2,'0');
-  seconds.textContent=String(Math.floor(diff%60000/1000)).padStart(2,'0');
+  days.textContent    = String(Math.floor(diff/86400000)).padStart(2,'0');
+  hours.textContent   = String(Math.floor(diff%86400000/3600000)).padStart(2,'0');
+  minutes.textContent = String(Math.floor(diff%3600000/60000)).padStart(2,'0');
+  seconds.textContent = String(Math.floor(diff%60000/1000)).padStart(2,'0');
 }
-setInterval(tick,1000); tick();
 
+tick();
+const timer = setInterval(tick,1000);
+
+/* ===== AUTO NEXT ===== */
 const main = document.getElementById("main");
 
 setTimeout(()=>{
   main.classList.add("fade-out");
 
   setTimeout(()=>{
+    clearInterval(timer);
+    window.__COUNTDOWN_RUNNING__ = false;
     go("invite.html");
   },900);
 
