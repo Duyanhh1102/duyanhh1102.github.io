@@ -22,13 +22,19 @@ async function loadPage(page){
 
   app.innerHTML = html;
 
-  // CHẠY SCRIPT TRONG FILE CON (FIX CHẾT JS)
-  app.querySelectorAll("script").forEach(old => {
+  // FIX: chạy lại toàn bộ script theo đúng thứ tự
+  const scripts = app.querySelectorAll("script");
+
+  for(const old of scripts){
     const s = document.createElement("script");
-    if(old.src) s.src = old.src;
-    else s.textContent = old.textContent;
+    if(old.src){
+      s.src = old.src + "?v=" + Date.now();
+      s.defer = true;
+    } else {
+      s.textContent = old.textContent;
+    }
     document.body.appendChild(s);
-  });
+  }
 
   window.scrollTo(0,0);
 }
