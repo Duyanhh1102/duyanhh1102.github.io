@@ -22,6 +22,6 @@ openBtn.addEventListener("click", () => {
 
   setTimeout(() => {
     // chuyển scene tiếp theo tại đây
-    window.location.href = "countdown.html";
+    go("countdown.html");
   }, 900);
 });
