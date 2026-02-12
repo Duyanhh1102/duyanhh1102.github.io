@@ -1,33 +1,31 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kỷ yếu</title>
-  <link rel="stylesheet" href="css/main.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kỷ yếu</title>
+<link rel="stylesheet" href="css/main.css">
 </head>
+
 <body>
 
-  <audio id="bgm" src="bg.mp3" loop></audio>
-  <div id="app"></div>
+<audio id="bgm" src="bg.mp3" loop></audio>
+<div id="app"></div>
 
 <script>
 const app = document.getElementById("app");
 const bgm = document.getElementById("bgm");
 
-async function loadPage(page) {
+async function loadPage(page){
   const res = await fetch("pages/" + page + "?v=" + Date.now());
   const html = await res.text();
 
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(html, "text/html");
+  app.innerHTML = html;
 
-  app.innerHTML = doc.body.innerHTML;
-
-  // ÉP CHẠY TOÀN BỘ SCRIPT
-  doc.querySelectorAll("script").forEach(old => {
+  // CHẠY SCRIPT TRONG FILE CON (FIX CHẾT JS)
+  app.querySelectorAll("script").forEach(old => {
     const s = document.createElement("script");
-    if (old.src) s.src = old.src;
+    if(old.src) s.src = old.src;
     else s.textContent = old.textContent;
     document.body.appendChild(s);
   });
@@ -35,14 +33,10 @@ async function loadPage(page) {
   window.scrollTo(0,0);
 }
 
-// Load intro
+window.go = page => loadPage(page);
+
 loadPage("intro.html");
 
-window.go = function(page){
-  loadPage(page);
-}
-
-// Fix iOS autoplay
 document.addEventListener("click",()=>{
   if(bgm.paused) bgm.play().catch(()=>{})
 },{once:true});
