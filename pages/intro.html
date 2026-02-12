@@ -13,7 +13,6 @@ body{background:black;overflow:hidden;height:100vh;color:#d4af37}
 
 canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 
-/* INTRO */
 #intro{
   position:fixed;inset:0;
   display:flex;
@@ -37,7 +36,6 @@ canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 
 .line.show{opacity:1;transform:translateY(0)}
 
-/* SCENE */
 #scene{
   position:fixed;inset:0;
   display:flex;
@@ -55,16 +53,12 @@ canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
   pointer-events:auto;
 }
 
-/* ENVELOPE */
 #envelope{
   width:260px;
   cursor:pointer;
   animation:float 4s ease-in-out infinite;
   filter:drop-shadow(0 0 30px rgba(255,215,0,.5));
-  transition:.3s;
 }
-
-#envelope:active{transform:scale(.95)}
 
 @keyframes float{
   0%,100%{transform:translateY(0)}
@@ -78,7 +72,6 @@ canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
   opacity:.8;
 }
 
-/* FLASH */
 #flash{
   position:fixed;
   inset:0;
@@ -110,8 +103,7 @@ canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 </div>
 
 <script>
-/* DOM */
-const l1 = document.getElementById("l1");
+const l1 = l1 = document.getElementById("l1");
 const l2 = document.getElementById("l2");
 const l3 = document.getElementById("l3");
 const intro = document.getElementById("intro");
@@ -127,8 +119,7 @@ function resize(){
   canvas.width=innerWidth;
   canvas.height=innerHeight;
 }
-resize();
-addEventListener("resize",resize);
+resize(); addEventListener("resize",resize);
 
 let stars=[];
 for(let i=0;i<140;i++){
@@ -172,13 +163,8 @@ envelope.addEventListener("click",()=>{
   flash.classList.add("active");
 
   setTimeout(()=>{
-    intro.style.opacity = 0;
-    scene.style.opacity = 0;
-  },200);
-
-  setTimeout(()=>{
-    go("countdown");
-  },1200);
+    go("countdown.html");
+  },900);
 });
 </script>
 
