@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kỷ yếu</title>
+
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+  <!-- Nhạc nền -->
+  <audio id="bgm" src="bg.mp3" autoplay loop></audio>
+
+  <!-- Khung load trang -->
+  <div id="app"></div>
+
+  <script>
+    const app = document.getElementById("app");
+
+    async function loadPage(page) {
+      const res = await fetch("pages/" + page);
+      const html = await res.text();
+      app.innerHTML = html;
+      window.scrollTo(0, 0);
+    }
+
+    // Load trang đầu
+    loadPage("intro.html");
+
+    // Cho phép các file con gọi chuyển trang
+    window.go = function(page) {
+      loadPage(page);
+    }
+  </script>
+
+  <script src="js/main.js"></script>
+
+</body>
+</html>
