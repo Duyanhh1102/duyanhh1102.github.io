@@ -4,62 +4,49 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kỷ yếu</title>
-
   <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
 
-  <!-- Nhạc nền -->
   <audio id="bgm" src="bg.mp3" loop></audio>
-
-  <!-- Khung load trang -->
   <div id="app"></div>
 
-  <script>
-    const app = document.getElementById("app");
-    const bgm = document.getElementById("bgm");
+<script>
+const app = document.getElementById("app");
+const bgm = document.getElementById("bgm");
 
-    async function loadPage(page) {
-      try {
-        const res = await fetch("pages/" + page + "?v=" + Date.now());
-        const html = await res.text();
-        app.innerHTML = html;
+async function loadPage(page) {
+  const res = await fetch("pages/" + page + "?v=" + Date.now());
+  const html = await res.text();
 
-        // ÉP SCRIPT TRONG FILE CON CHẠY LẠI (FIX LỖI KHÔNG HIỆN THƯ + KHÔNG CHẠY JS)
-        app.querySelectorAll("script").forEach(oldScript => {
-          const newScript = document.createElement("script");
-          if (oldScript.src) {
-            newScript.src = oldScript.src;
-          } else {
-            newScript.textContent = oldScript.textContent;
-          }
-          document.body.appendChild(newScript);
-          oldScript.remove();
-        });
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, "text/html");
 
-        window.scrollTo(0, 0);
-      } catch (err) {
-        app.innerHTML = "<h3 style='color:red;text-align:center'>Lỗi tải trang</h3>";
-      }
-    }
+  app.innerHTML = doc.body.innerHTML;
 
-    // Load trang đầu
-    loadPage("intro.html");
+  // ÉP CHẠY TOÀN BỘ SCRIPT
+  doc.querySelectorAll("script").forEach(old => {
+    const s = document.createElement("script");
+    if (old.src) s.src = old.src;
+    else s.textContent = old.textContent;
+    document.body.appendChild(s);
+  });
 
-    // Cho phép các file con gọi chuyển trang
-    window.go = function(page) {
-      loadPage(page);
-    }
+  window.scrollTo(0,0);
+}
 
-    // Fix iOS autoplay nhạc
-    document.addEventListener("click", () => {
-      if (bgm.paused) {
-        bgm.play().catch(()=>{});
-      }
-    }, { once: true });
-  </script>
+// Load intro
+loadPage("intro.html");
 
-  <script src="js/main.js"></script>
+window.go = function(page){
+  loadPage(page);
+}
+
+// Fix iOS autoplay
+document.addEventListener("click",()=>{
+  if(bgm.paused) bgm.play().catch(()=>{})
+},{once:true});
+</script>
 
 </body>
 </html>
