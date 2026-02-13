@@ -91,6 +91,8 @@ canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 
 <body>
 
+<audio id="bgm" src="../bg.mp3" loop></audio>
+
 <canvas id="stars"></canvas>
 <div id="flash"></div>
 
@@ -113,6 +115,7 @@ const intro=document.getElementById("intro");
 const scene=document.getElementById("scene");
 const flash=document.getElementById("flash");
 const envelope=document.getElementById("envelope");
+const bgm=document.getElementById("bgm");
 
 const canvas=document.getElementById("stars");
 const ctx=canvas.getContext("2d");
@@ -160,12 +163,26 @@ setTimeout(()=>{
   },1200);
 },5200);
 
+/* CLICK OPEN */
 envelope.addEventListener("click",()=>{
+
+  if(bgm.paused){
+    bgm.play().catch(()=>{});
+    sessionStorage.setItem("bgm","on");
+  }
+
   flash.classList.add("active");
+
   setTimeout(()=>{
-    parent.goto("countdown.html");
-  },900);
+    location.href="countdown.html";
+  },1000);
+
 });
+
+/* GIỮ NHẠC KHI LOAD */
+if(sessionStorage.getItem("bgm")==="on"){
+  bgm.play().catch(()=>{});
+}
 </script>
 
 </body>
