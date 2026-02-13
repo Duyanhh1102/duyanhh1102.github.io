@@ -19,7 +19,7 @@ canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
   align-items:center;
   justify-content:center;
   z-index:5;
-  transition:1s;
+  transition:1.2s ease;
 }
 .main.fade-out{opacity:0;transform:scale(.96);}
 
@@ -75,13 +75,6 @@ canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 </div>
 
 <script>
-/* ===== GIỮ NHẠC XUYÊN TRANG ===== */
-window.addEventListener("load",()=>{
-  if(parent.bgMusic && parent.bgMusic.paused){
-    parent.bgMusic.play().catch(()=>{});
-  }
-});
-
 /* STAR BACKGROUND */
 const canvas=document.getElementById("stars");
 const ctx=canvas.getContext("2d");
@@ -136,7 +129,7 @@ tick();
 setTimeout(()=>{
   document.getElementById("main").classList.add("fade-out");
   setTimeout(()=>{
-    parent.goto("invite.html");
+    location.href="invite.html";
   },900);
 },3500);
 </script>
