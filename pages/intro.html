@@ -162,10 +162,9 @@ setTimeout(()=>{
 
 envelope.addEventListener("click",()=>{
   flash.classList.add("active");
-
   setTimeout(()=>{
-    location.href="countdown.html";
-  },1000);
+    parent.goto("countdown.html");
+  },900);
 });
 </script>
 
