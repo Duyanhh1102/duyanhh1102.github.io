@@ -163,12 +163,15 @@ setTimeout(()=>{
 /* CLICK OPEN */
 envelope.addEventListener("click",()=>{
 
-  parent.startMusic();   // 🔥 CHỈ GỌI NHẠC TỪ INDEX
+  // GỌI NHẠC TỪ INDEX
+  if(window.parent && window.parent.startMusic){
+    window.parent.startMusic();
+  }
 
   flash.classList.add("active");
 
   setTimeout(()=>{
-    parent.goto("countdown.html");
+    window.parent.goto("countdown.html");
   },1000);
 
 });
