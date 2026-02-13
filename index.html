@@ -4,52 +4,31 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kỷ yếu</title>
-<link rel="stylesheet" href="css/main.css">
 </head>
 
 <body>
 
 <audio id="bgm" src="bg.mp3" loop></audio>
-<div id="app"></div>
 
 <script>
-const app = document.getElementById("app");
 const bgm = document.getElementById("bgm");
 
-async function loadPage(page){
-  if(!page.endsWith(".html")) page += ".html";
-
-  const res = await fetch("pages/" + page + "?v=" + Date.now());
-  if(!res.ok){
-    app.innerHTML = "<h2 style='color:red;text-align:center'>Lỗi load trang: "+page+"</h2>";
-    return;
+document.addEventListener("click", () => {
+  if (bgm.paused) {
+    bgm.play().catch(()=>{});
+    sessionStorage.setItem("bgm", "on");
   }
+}, { once:true });
 
-  const html = await res.text();
-  app.innerHTML = html;
-
-  // chạy lại script trong file con
-  app.querySelectorAll("script").forEach(old => {
-    const s = document.createElement("script");
-    if(old.src){
-      s.src = old.src + "?v=" + Date.now();
-    } else {
-      s.textContent = old.textContent;
-    }
-    document.body.appendChild(s);
-    old.remove();
-  });
-
-  window.scrollTo(0,0);
+// Giữ nhạc khi reload
+if(sessionStorage.getItem("bgm") === "on"){
+  bgm.play().catch(()=>{});
 }
 
-window.go = page => loadPage(page);
-
-loadPage("intro");
-
-document.addEventListener("click",()=>{
-  if(bgm.paused) bgm.play().catch(()=>{})
-},{once:true});
+// Redirect vào intro
+setTimeout(()=>{
+  location.href="pages/intro.html";
+},200);
 </script>
 
 </body>
