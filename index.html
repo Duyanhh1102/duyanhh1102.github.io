@@ -4,31 +4,51 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kỷ yếu</title>
+<style>
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+}
+iframe{
+  border:none;
+  width:100%;
+  height:100%;
+}
+</style>
 </head>
 
 <body>
 
 <audio id="bgm" src="bg.mp3" loop></audio>
 
+<iframe id="frame" src="pages/intro.html"></iframe>
+
 <script>
 const bgm = document.getElementById("bgm");
+const frame = document.getElementById("frame");
 
-document.addEventListener("click", () => {
-  if (bgm.paused) {
-    bgm.play().catch(()=>{});
-    sessionStorage.setItem("bgm", "on");
+function startMusic(){
+  if(bgm.paused){
+    bgm.play().then(()=>{
+      sessionStorage.setItem("bgm","on");
+    }).catch(()=>{});
   }
-}, { once:true });
-
-// Giữ nhạc khi reload
-if(sessionStorage.getItem("bgm") === "on"){
-  bgm.play().catch(()=>{});
 }
 
-// Redirect vào intro
-setTimeout(()=>{
-  location.href="pages/intro.html";
-},200);
+// Click để bật nhạc (chuẩn autoplay policy PC + mobile)
+document.addEventListener("click", startMusic, { once:true });
+
+// Nếu đã bật trước đó thì phát lại
+if(sessionStorage.getItem("bgm")==="on"){
+  startMusic();
+}
+
+// Cho các trang con đổi page mà không reload nhạc
+window.goto = function(page){
+  frame.src = "pages/" + page;
+};
 </script>
 
 </body>
