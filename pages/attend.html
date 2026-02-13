@@ -5,6 +5,8 @@
 <title>Tham dự</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link rel="prefetch" href="end-attend.html">
+
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
@@ -24,7 +26,7 @@ inset:0;
 background:radial-gradient(circle at center,rgba(255,215,120,.15),transparent 70%);
 pointer-events:none;
 opacity:0;
-transition:1.3s;
+transition:1.5s ease;
 }
 
 .wrap{
@@ -36,17 +38,17 @@ background:rgba(255,255,255,0.05);
 border:1px solid rgba(255,215,120,.45);
 text-align:center;
 box-shadow:0 0 50px rgba(255,215,120,.35);
-animation:slideFade 1.2s ease forwards;
+animation:slideFade 1.1s ease forwards;
 opacity:0;
 transform:translateY(20px);
-transition:1.3s ease;
+transition:1.4s cubic-bezier(.4,0,.2,1);
 }
 
 @keyframes slideFade{to{opacity:1;transform:translateY(0)}}
 
 .wrap.fade-out{
 opacity:0;
-transform:scale(.92);
+transform:scale(.94);
 filter:blur(10px);
 }
 
@@ -93,18 +95,18 @@ font-weight:600;
 letter-spacing:2px;
 font-size:15px;
 cursor:pointer;
-transition:.4s ease;
+transition:.45s ease;
 box-shadow:0 0 35px rgba(255,233,168,.6);
 position:relative;
 overflow:hidden
 }
 
 button:hover{
-transform:scale(1.07);
+transform:scale(1.06);
 box-shadow:0 0 70px rgba(255,233,168,1)
 }
 
-button.loading{pointer-events:none;opacity:.75}
+button.loading{pointer-events:none;opacity:.8}
 
 button.loading::after{
 content:'';
@@ -127,7 +129,7 @@ margin-top:22px;
 color:#ffe9a8;
 letter-spacing:1px;
 font-size:15px;
-animation:successPop .6s ease forwards;
+animation:successPop .5s ease forwards;
 }
 
 @keyframes successPop{
@@ -187,11 +189,11 @@ document.getElementById('form').addEventListener('submit', function(e){
     setTimeout(()=>{
       overlay.style.opacity = 1;
       wrap.classList.add('fade-out');
-    },600);
+    },700);
 
     setTimeout(()=>{
-      window.location.href = "end-attend.html";
-    },1700);
+      window.location.replace("end-attend.html");
+    },1900);
 
   }, function(error){
     btn.classList.remove('loading');
