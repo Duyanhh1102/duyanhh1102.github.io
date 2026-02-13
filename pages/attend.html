@@ -24,7 +24,7 @@ inset:0;
 background:radial-gradient(circle at center,rgba(255,215,120,.15),transparent 70%);
 pointer-events:none;
 opacity:0;
-transition:1.2s;
+transition:1.3s;
 }
 
 .wrap{
@@ -39,7 +39,7 @@ box-shadow:0 0 50px rgba(255,215,120,.35);
 animation:slideFade 1.2s ease forwards;
 opacity:0;
 transform:translateY(20px);
-transition:1.2s ease;
+transition:1.3s ease;
 }
 
 @keyframes slideFade{to{opacity:1;transform:translateY(0)}}
@@ -47,7 +47,7 @@ transition:1.2s ease;
 .wrap.fade-out{
 opacity:0;
 transform:scale(.92);
-filter:blur(8px);
+filter:blur(10px);
 }
 
 h1{
@@ -185,13 +185,13 @@ document.getElementById('form').addEventListener('submit', function(e){
     success.style.display = 'block';
 
     setTimeout(()=>{
-      wrap.classList.add('fade-out');
       overlay.style.opacity = 1;
-    },900);
+      wrap.classList.add('fade-out');
+    },600);
 
     setTimeout(()=>{
       window.location.href = "end-attend.html";
-    },2200);
+    },1700);
 
   }, function(error){
     btn.classList.remove('loading');
