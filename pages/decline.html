@@ -5,6 +5,8 @@
 <title>Không tham dự</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link rel="prefetch" href="end-decline.html">
+
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
@@ -18,14 +20,13 @@ font-family:'Montserrat',sans-serif;color:#f5e8c8;
 overflow:hidden
 }
 
-/* overlay ánh champagne */
 .overlay{
 position:fixed;
 inset:0;
 background:radial-gradient(circle at center,rgba(216,194,157,.18),transparent 70%);
 pointer-events:none;
 opacity:0;
-transition:1.6s ease;
+transition:1.2s;
 }
 
 .wrap{
@@ -40,15 +41,15 @@ box-shadow:0 0 50px rgba(216,194,157,.35);
 animation:slideFade 1.2s ease forwards;
 opacity:0;
 transform:translateY(20px);
-transition:1.4s cubic-bezier(.22,1,.36,1);
+transition:1.2s ease;
 }
 
 @keyframes slideFade{to{opacity:1;transform:translateY(0)}}
 
 .wrap.fade-out{
 opacity:0;
-transform:scale(.96) translateY(-10px);
-filter:blur(6px);
+transform:scale(.92);
+filter:blur(8px);
 }
 
 h1{
@@ -191,11 +192,11 @@ document.getElementById('form').addEventListener('submit', function(e){
     setTimeout(()=>{
       wrap.classList.add('fade-out');
       overlay.style.opacity = 1;
-    },800);
+    },900);
 
     setTimeout(()=>{
       window.location.href = "end-decline.html";
-    },2600);
+    },2100);
 
   }, function(error){
     btn.classList.remove('loading');
