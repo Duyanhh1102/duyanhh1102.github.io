@@ -8,29 +8,34 @@
 
 <body style="margin:0;background:black;overflow:hidden">
 
-<audio id="bgm" src="bg.mp3" loop></audio>
+<audio id="bgm" src="bg.mp3" loop preload="auto"></audio>
 
-<iframe id="frame" src="pages/intro.html" style="border:none;width:100vw;height:100vh;"></iframe>
+<iframe id="frame" src="pages/intro.html"
+        style="border:none;width:100vw;height:100vh;"></iframe>
 
 <script>
 const bgMusic = document.getElementById("bgm");
 const frame = document.getElementById("frame");
 
+/* ===== RESET NHẠC KHI RELOAD ===== */
+sessionStorage.removeItem("bgm");
+
+/* ===== GLOBAL CONTROL ===== */
 window.bgMusic = bgMusic;
 
-// CHỈ CLICK 1 LẦN DUY NHẤT TOÀN SITE
-document.addEventListener("click",()=>{
+/* ===== CHỈ PHÁT NHẠC KHI BẤM MỞ THƯ ===== */
+window.startMusic = function(){
   if(bgMusic.paused){
+    bgMusic.currentTime = 0;
     bgMusic.play().catch(()=>{});
+    sessionStorage.setItem("bgm","on");
   }
-},{once:true});
-
-// Hàm chuyển trang KHÔNG reload nhạc
-function goto(page){
-  frame.src="pages/"+page;
 }
 
-window.goto = goto;
+/* ===== CHUYỂN TRANG KHÔNG RESET NHẠC ===== */
+window.goto = function(page){
+  frame.src = "pages/" + page;
+}
 </script>
 
 </body>
