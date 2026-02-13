@@ -139,7 +139,7 @@
     const wrap = document.getElementById('wrap');
     wrap.classList.add('fade-out');
     setTimeout(() => {
-      location.href = "attend.html";
+      parent.goto("attend.html");
     }, 900);
   }
 
@@ -147,7 +147,7 @@
     const wrap = document.getElementById('wrap');
     wrap.classList.add('fade-out');
     setTimeout(() => {
-      location.href = "decline.html";
+      parent.goto("decline.html");
     }, 900);
   }
 </script>
