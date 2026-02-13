@@ -75,13 +75,17 @@ letter-spacing:1px;
 animation-delay:2.1s
 }
 
+/* ===== CHỮ TÊN TRẮNG + TOẢ SÁNG ===== */
 .signature{
 margin-top:26px;
 font-family:'Playfair Display',serif;
 font-size:18px;
 letter-spacing:3px;
-color:#ffbdbd;
-text-shadow:0 0 12px rgba(255,189,189,.6);
+color:#ffffff;
+text-shadow:
+  0 0 6px rgba(255,255,255,.6),
+  0 0 14px rgba(255,255,255,.45),
+  0 0 28px rgba(255,255,255,.25);
 animation-delay:3.2s
 }
 
@@ -123,7 +127,6 @@ to{opacity:0;filter:blur(8px)}
 </div>
 
 <script>
-/* PARTICLE STAR BACKGROUND */
 const canvas = document.getElementById("stars");
 const ctx = canvas.getContext("2d");
 
