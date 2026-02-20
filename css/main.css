@@ -73,6 +73,10 @@ body {
 
 /* MOBILE FIX */
 @media (max-width: 480px) {
+  .countdown-box {
+    transform: scale(0.85);
+  }
+}
 
   .title {
     font-size: 18px;
@@ -95,7 +99,7 @@ body {
   }
 
   .label {
-    font-size: 9px;
+    font-size: 8px;
     letter-spacing: 1px;
   }
 
