@@ -11,6 +11,7 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Playfair Display',serif;}
 body{background:black;color:#ffd700;overflow:hidden;height:100vh;}
 canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+
 .main{
   position:fixed;
   inset:0;
@@ -19,9 +20,9 @@ canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
   align-items:center;
   justify-content:center;
   z-index:5;
-  transition:1.2s ease;
+  transition:1.2s cubic-bezier(.4,0,.2,1);
 }
-.main.fade-out{opacity:0;transform:scale(.96);}
+.main.fade-out{opacity:0;transform:scale(.92);}
 
 .title{
   font-size:28px;
@@ -53,9 +54,45 @@ canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
 .num{font-size:38px}
 .label{font-size:12px;letter-spacing:2px;opacity:.85}
 .colon{font-size:42px;margin-top:-12px}
+
+/* ===== MOBILE FIX ===== */
+@media (max-width: 480px) {
+  .main {
+    transform: scale(0.82);
+  }
+
+  .title {
+    font-size: 20px;
+    letter-spacing: 2px;
+    margin-bottom: 18px;
+  }
+
+  .timer {
+    gap: 6px;
+  }
+
+  .box {
+    width: 70px;
+    height: 86px;
+  }
+
+  .num {
+    font-size: 28px;
+  }
+
+  .label {
+    font-size: 10px;
+    letter-spacing: 1px;
+  }
+
+  .colon {
+    font-size: 32px;
+    margin-top: -6px;
+  }
+}
 </style>
 </head>
-<meta name="viewport" content="width=device-with, inital-scale=1.0, maximum-scale=1.0, user-scale=no">
+
 <body>
 
 <canvas id="stars"></canvas>
