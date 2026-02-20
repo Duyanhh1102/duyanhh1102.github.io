@@ -101,17 +101,18 @@ body {
 @media (max-width: 480px) {
 
   .line {
-    font-size: 14px;
+    font-size: 13px;
+    letter-spacing: 1.5px;
   }
 
   .title {
-    font-size: 21px;
-    letter-spacing: 2px;
+    font-size: 19px;
+    letter-spacing: 1.5px;
   }
 
   #openBtn {
-    padding: 11px 32px;
-    font-size: 13px;
+    padding: 10px 30px;
+    font-size: 12px;
   }
 }
 
